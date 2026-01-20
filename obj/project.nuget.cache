@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "nSsk23002Gw=",
+  "success": true,
+  "projectFilePath": "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\guany\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.31\\microsoft.windowsdesktop.app.ref.6.0.31.nupkg.sha512",
+    "C:\\Users\\guany\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.31\\microsoft.netcore.app.ref.6.0.31.nupkg.sha512",
+    "C:\\Users\\guany\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.31\\microsoft.aspnetcore.app.ref.6.0.31.nupkg.sha512",
+    "C:\\Users\\guany\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.31\\microsoft.netcore.app.host.win-x64.6.0.31.nupkg.sha512"
+  ],
+  "logs": []
+}

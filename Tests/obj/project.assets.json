@@ -1,0 +1,103 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "CalcFen/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/CalcFen.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CalcFen.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CalcFen/1.0.0": {
+      "type": "project",
+      "path": "../CalcFen.csproj",
+      "msbuildProject": "../CalcFen.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "CalcFen >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\guany\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\code\\cp\\AiGenerate\\CalcFen\\Tests\\TestApp.csproj",
+      "projectName": "TestApp",
+      "projectPath": "D:\\code\\cp\\AiGenerate\\CalcFen\\Tests\\TestApp.csproj",
+      "packagesPath": "C:\\Users\\guany\\.nuget\\packages\\",
+      "outputPath": "D:\\code\\cp\\AiGenerate\\CalcFen\\Tests\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\guany\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj": {
+              "projectPath": "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "项目 CalcFen 与 net6.0 (.NETCoreApp,Version=v6.0) 不兼容。 项目 CalcFen 支持: net6.0-windows7.0 (.NETCoreApp,Version=v6.0)",
+      "libraryId": "CalcFen",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}
