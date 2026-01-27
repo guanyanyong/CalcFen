@@ -386,7 +386,7 @@ namespace CpCodeSelect.Core
         
         /// <summary>
         /// 计算出手周期和出手手数
-        /// 重新设计：基于当前数据向前查找，从最近的已完成周期开始计算当前出手的周期信息
+        /// 严格按照"中奖或达到8期"来完成一个周期的规则
         /// </summary>
         /// <param name="currentData"></param>
         public void CalculateChuShouCycleAndHandNumber(LotteryData currentData)
@@ -401,72 +401,84 @@ namespace CpCodeSelect.Core
                 return;
             }
 
-            // 找到当前出手在历史数据中的索引
-            int currentIndex = HistoryData.IndexOf(currentData);
-            if (currentIndex == -1)
+            // 从头开始重新计算所有出手的周期信息，以确保准确性
+            // 找出所有出手记录及其索引
+            var allChuShouRecords = new List<(int index, LotteryData data)>();
+            for (int i = 0; i < HistoryData.Count; i++)
             {
-                return;
-            }
-
-            // 从当前数据向前查找，确定当前出手的周期编号和步骤
-            int currentCycleNumber = 1;
-            int currentCycleStep = 1;
-
-            // 寻找最近一个已完成/爆掉的周期
-            int lastCompletedCycleIndex = -1;
-            int lastCompletedCycleNumber = 0;
-            
-            for (int i = currentIndex - 1; i >= 0; i--)
-            {
-                var data = HistoryData[i];
-                if (data.IsChuShou && (data.IsCycleComplete || data.IsCycleBurst))
+                if (HistoryData[i].IsChuShou)
                 {
-                    // 找到了最近一个已完成的周期
-                    lastCompletedCycleIndex = i;
-                    lastCompletedCycleNumber = data.CycleNumber;
-                    break;
+                    allChuShouRecords.Add((i, HistoryData[i]));
+                    
+                    // 如果已经计算到了目标出手，停止添加新记录（但我们仍需要完整循环来计算中间值）
+                    if (i == HistoryData.IndexOf(currentData))
+                        break;
                 }
             }
 
-            if (lastCompletedCycleIndex == -1)
+            // 按照严格的周期规则进行计算：
+            // 1. 每个周期从步骤1开始
+            // 2. 当出现中奖或达到第8步时，当前周期完成，下一出手开始新周期
+            int currentCycle = 1;
+            int stepOfCurrentCycle = 1;
+
+            for (int i = 0; i < allChuShouRecords.Count; i++)
             {
-                // 没有找到已完成的周期之前，需要从头开始计算此周期中的步数
-                // 找到当前周期的第一个出手（即最近完成周期之后的第一个出手，或从头开始）
+                var (index, record) = allChuShouRecords[i];
                 
-                // 计算从上次完成周期后（或从头）到当前出手的步数
-                int stepCount = 1; // 当前出手作为第一步（或第n步）
-                
-                // 从当前出手的前一个开始向前查找，直到找到上一个完成的周期或到达数据开头
-                for (int i = currentIndex - 1; i >= 0; i--)
+                // 检查是否需要开启新周期
+                if (i > 0) // 不是第一个出手
                 {
-                    if (HistoryData[i].IsChuShou)
+                    var (prevIndex, prevRecord) = allChuShouRecords[i-1];
+                    
+                    // 检查前一个出手是否导致周期完成
+                    // 在前一个出手之后，检查是否会开启新周期
+                    int nextResultIndex = prevIndex + 1; // 前一个出手的下一期结果
+                    
+                    if (nextResultIndex < HistoryData.Count)
                     {
-                        // 如果找到一个已完成的周期的出手，则停止
-                        if (HistoryData[i].IsCycleComplete || HistoryData[i].IsCycleBurst)
+                        // 如果前一个出手的下一期中奖了，或者前一个出手是第8步且下一期未中奖，则前一个周期完成
+                        bool prevCycleCompleted = false;
+                        
+                        // 对于第一个出手，我们不能检查它的前一个出手
+                        // 检查是否前一个出手导致了周期完成
+                        if (HistoryData[nextResultIndex].IsZhongJiang || prevRecord.CycleStep == 8)
                         {
-                            break;
+                            currentCycle = prevRecord.CycleNumber + 1;
+                            stepOfCurrentCycle = 1;
+                            prevCycleCompleted = true;
                         }
-                        // 否则增加步数
-                        stepCount++;
+                        else
+                        {
+                            // 继续当前周期
+                            stepOfCurrentCycle = prevRecord.CycleStep + 1;
+                        }
+                    }
+                    else
+                    {
+                        // 这是当前最新的数据，无法检查是否会中奖，保守估计继续当前周期
+                        stepOfCurrentCycle = prevRecord.CycleStep + 1;
                     }
                 }
                 
-                // 当前出手在这个周期中是第 stepCount 步，但不超过8
-                currentCycleNumber = 1; // 因为没有找到之前的完成周期，所以从第1周期开始
-                currentCycleStep = Math.Min(stepCount, 8);
+                // 限制步骤不超过8
+                stepOfCurrentCycle = Math.Min(stepOfCurrentCycle, 8);
+                
+                // 为当前出手分配周期信息
+                record.CycleNumber = currentCycle;
+                record.CycleStep = stepOfCurrentCycle;
+                record.IsPartOfCycle = true;
+                record.HandNumber = stepOfCurrentCycle;
+                
+                // 如果这是我们要计算的目标数据，保存结果
+                if (index == HistoryData.IndexOf(currentData))
+                {
+                    currentData.CycleNumber = record.CycleNumber;
+                    currentData.CycleStep = record.CycleStep;
+                    currentData.IsPartOfCycle = record.IsPartOfCycle;
+                    currentData.HandNumber = record.HandNumber;
+                }
             }
-            else
-            {
-                // 找到了最近的完成周期，当前出手属于下一个新周期
-                currentCycleNumber = lastCompletedCycleNumber + 1;
-                currentCycleStep = 1; // 属于新周期，是第一步
-            }
-
-            // 设置当前出手的周期信息
-            currentData.CycleNumber = currentCycleNumber;
-            currentData.CycleStep = currentCycleStep;
-            currentData.IsPartOfCycle = true;
-            currentData.HandNumber = currentCycleStep;
             
             // 调试输出（如果需要）
             // Console.WriteLine($"周期[{currentData.CycleNumber}] 步骤[{currentData.CycleStep}] - 期号: {currentData.QiHao}");

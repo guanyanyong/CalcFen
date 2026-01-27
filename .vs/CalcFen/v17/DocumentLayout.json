@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\code\\cp\\AiGenerate\\CalcFen\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\bollingerbandssimple.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:bollingerbandssimple.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\kline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:kline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -42,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,7 +58,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": "BollingerBandsSimple.cs",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\BollingerBandsSimple.cs",
+              "RelativeDocumentMoniker": "BollingerBandsSimple.cs",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\BollingerBandsSimple.cs",
+              "RelativeToolTip": "BollingerBandsSimple.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAUwBcAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T12:30:06.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "KLine.cs",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\KLine.cs",
+              "RelativeDocumentMoniker": "KLine.cs",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\KLine.cs",
+              "RelativeToolTip": "KLine.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAA0wA8AAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T12:29:59.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "MainForm.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeDocumentMoniker": "MainForm.cs",
@@ -62,20 +96,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeDocumentMoniker": "MainForm.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeToolTip": "MainForm.cs",
-              "ViewState": "AQIAALECAAAAAAAAAAAWwL0CAABGAAAA",
+              "ViewState": "AQIAAPgBAAAAAAAAAAAvwAMCAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-27T06:46:16.249Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "LotteryData.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Models\\LotteryData.cs",
               "RelativeDocumentMoniker": "Models\\LotteryData.cs",
@@ -88,7 +122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "CalcFen",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj",
               "RelativeDocumentMoniker": "CalcFen.csproj",
@@ -101,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "LotteryProcessor.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
               "RelativeDocumentMoniker": "Core\\LotteryProcessor.cs",
@@ -114,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "CalcFen.AssemblyInfo.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
               "RelativeDocumentMoniker": "obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
@@ -127,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "ScoreRules.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\Rules\\ScoreRules.cs",
               "RelativeDocumentMoniker": "Scorer\\Rules\\ScoreRules.cs",
@@ -140,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": ".NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
               "RelativeDocumentMoniker": "obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",

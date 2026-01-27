@@ -426,15 +426,15 @@ namespace CalcFen
                 }
                 
                 lstScores.Items.Add($"是否大遗漏: {(selectedData.IsDaYiLou ? "是" : "否")}");
-                lstScores.Items.Add($"是否确认点: {(selectedData.IsQueRenDian ? "是" : "否")}");
-                lstScores.Items.Add($"是否趋势段: {(selectedData.IsQuShiDuan ? "是" : "否")}");
+                lstScores.Items.Add($"是否确认点: 【{(selectedData.IsQueRenDian ? "是" : "否")}】");
+                lstScores.Items.Add($"是否趋势段: 【{(selectedData.IsQuShiDuan ? "是" : "否")}】");
                 lstScores.Items.Add($"大遗漏后理论周期内中奖数: {selectedData.DaYiLouHouLiLunZhouQiNeiZhongJiangShu}");
                 
                 // 根据业务逻辑，当前期做出出手决定，但是否中奖要看下一期的结果
                 // 所以显示出手决策和中奖结果分开显示
-                lstScores.Items.Add($"是否出手: {(selectedData.IsChuShou ? "是" : "否")}");
+                lstScores.Items.Add($"是否出手: 【{(selectedData.IsChuShou ? "是" : "否")}】");
                 lstScores.Items.Add($"是否中奖: {(selectedData.IsZhongJiang ? "是" : "否")}");
-                lstScores.Items.Add($"出手后是否成功: {(selectedData.IsChuShouSuccess ? "是" : "否")}");
+                lstScores.Items.Add($"出手后是否成功: 【{(selectedData.IsChuShouSuccess ? "中" : "不中")}】");
                 
                 // 显示周期相关信息
                 if (selectedData.IsChuShou)
@@ -534,7 +534,13 @@ namespace CalcFen
         {
             if (processor?.Numbers350 != null)
             {
-                txt350Numbers.Text = string.Join(",", processor.Numbers350);
+                // 将号码转换为整数，排序后转回字符串，用空格分隔
+                var sortedNumbers = processor.Numbers350
+                    .Select(int.Parse)  // 转换为整数
+                    .OrderBy(n => n)    // 按升序排序
+                    .Select(n => n.ToString("D3")); // 转回3位数字格式
+                
+                txt350Numbers.Text = string.Join(" ", sortedNumbers);
             }
         }
 
@@ -685,30 +691,17 @@ namespace CalcFen
                     }
                 }
 
-                // 第三步：确定周期完成和爆掉状态
-                // 重要：要正确标记周期状态，而不依赖尚未计算的周期信息
+                // 第三步：按时间顺序重新计算所有出手数据的周期信息
+                // 先重置周期相关状态
                 for (int i = 0; i < processor.HistoryData.Count; i++)
                 {
-                    if (i > 0 && processor.HistoryData[i - 1].IsChuShou)
-                    {
-                        // 如果当前期中奖，上一期出手的周期完成
-                        if (processor.HistoryData[i].IsZhongJiang)
-                        {
-                            processor.HistoryData[i - 1].IsCycleComplete = true;
-                        }
-                        // 检查是否是第8步未中奖导致周期爆掉
-                        else if (i < processor.HistoryData.Count - 1 && 
-                                processor.HistoryData[i - 1].IsChuShou && 
-                                processor.HistoryData[i - 1].CycleStep == 8 && 
-                                !processor.HistoryData[i].IsZhongJiang)
-                        {
-                            processor.HistoryData[i - 1].IsCycleBurst = true;
-                        }
-                    }
+                    processor.HistoryData[i].IsCycleComplete = false;
+                    processor.HistoryData[i].IsCycleBurst = false;
+                    processor.HistoryData[i].IsChuShouSuccess = false;
                 }
                 
-                // 第四步：现在才计算周期和步骤信息，此时周期完成/爆掉状态已知
-                // 按时间顺序重新计算所有出手数据的周期信息
+                // 第四步：按时间顺序重新计算所有出手数据的周期和步骤信息
+                // 严格按顺序执行，确保每次调用CalculateChuShouCycleAndHandNumber时依赖的数据已经计算好
                 for (int i = 0; i < processor.HistoryData.Count; i++)
                 {
                     if (processor.HistoryData[i].IsChuShou)
@@ -717,8 +710,16 @@ namespace CalcFen
                     }
                 }
                 
-                // 第五步：基于正确计算的周期信息，更新所有周期完成/爆掉状态
-                // 通过完整的周期信息来标记同一周期内的所有出手
+                // 第五步：然后计算出手成功性
+                for (int i = 0; i < processor.HistoryData.Count; i++)
+                {
+                    if (i > 0 && processor.HistoryData[i - 1].IsChuShou)
+                    {
+                        processor.HistoryData[i - 1].IsChuShouSuccess = processor.HistoryData[i].IsZhongJiang;
+                    }
+                }
+                
+                // 第六步：标记周期完成和爆掉状态
                 for (int i = 0; i < processor.HistoryData.Count; i++)
                 {
                     if (i > 0 && processor.HistoryData[i - 1].IsChuShou)
@@ -726,11 +727,12 @@ namespace CalcFen
                         // 检查上一期出手是否完成了其所在周期
                         if (processor.HistoryData[i].IsZhongJiang) // 如果当前期中奖，则上一期出手所在的周期完成
                         {
+                            // 标记上一期出手完成其周期
                             processor.HistoryData[i - 1].IsCycleComplete = true;
                             
-                            // 标记同一周期内的所有其他出手也为完成状态
+                            // 同时标记同一周期内的所有出手为完成
                             int currentCycleNumber = processor.HistoryData[i - 1].CycleNumber;
-                            for (int j = i - 1; j >= 0; j--)
+                            for (int j = 0; j < processor.HistoryData.Count; j++)
                             {
                                 if (processor.HistoryData[j].IsChuShou && 
                                     processor.HistoryData[j].CycleNumber == currentCycleNumber)
@@ -738,23 +740,19 @@ namespace CalcFen
                                     processor.HistoryData[j].IsCycleComplete = true;
                                     processor.HistoryData[j].IsCycleBurst = false; // 完成周期，不是爆掉
                                 }
-                                else if (processor.HistoryData[j].CycleNumber < currentCycleNumber)
-                                {
-                                    // 如果周期号更小，说明已经不属于同一周期
-                                    break;
-                                }
                             }
                         }
                         // 检查周期是否因第8步未中奖而爆掉
                         else if (processor.HistoryData[i - 1].CycleStep == 8 && 
-                                i < processor.HistoryData.Count - 1 && 
+                                i < processor.HistoryData.Count && 
                                 !processor.HistoryData[i].IsZhongJiang)
                         {
+                            // 标记上一期出手导致周期爆掉
                             processor.HistoryData[i - 1].IsCycleBurst = true;
                             
-                            // 标记整个周期爆掉
+                            // 同时标记整个周期爆掉
                             int currentCycleNumber = processor.HistoryData[i - 1].CycleNumber;
-                            for (int j = i - 1; j >= 0; j--)
+                            for (int j = 0; j < processor.HistoryData.Count; j++)
                             {
                                 if (processor.HistoryData[j].IsChuShou && 
                                     processor.HistoryData[j].CycleNumber == currentCycleNumber)
@@ -762,17 +760,12 @@ namespace CalcFen
                                     processor.HistoryData[j].IsCycleBurst = true;
                                     processor.HistoryData[j].IsCycleComplete = false; // 爆掉，不是完成
                                 }
-                                else if (processor.HistoryData[j].CycleNumber < currentCycleNumber)
-                                {
-                                    // 如果周期号更小，说明已经不属于同一周期
-                                    break;
-                                }
                             }
                         }
                     }
                 }
                 
-                // 第六步：最后再重新计算一次周期信息，确保一致性
+                // 第七步：最后再重新计算一次周期信息，确保一致性
                 for (int i = 0; i < processor.HistoryData.Count; i++)
                 {
                     if (processor.HistoryData[i].IsChuShou)
@@ -836,20 +829,14 @@ namespace CalcFen
                         {
                             // 遍历每个周期中的每个出手来统计步骤分布
                             var stepRecords = new List<LotteryData>();
-                            var count = 0;
                             foreach(var cycleGroup in cycles)
                             {
-                                //var cycleSteps = cycleGroup.Where(d => d.CycleStep == step).ToList();
-                                //stepRecords.AddRange(cycleSteps);
-                                if(step == cycleGroup.Count())
-                                {
-                                    count++;
-                                }
-
+                                var cycleSteps = cycleGroup.Where(d => d.CycleStep == step).ToList();
+                                stepRecords.AddRange(cycleSteps);
                             }
                             
                             int successCount = stepRecords.Count(d => d.IsChuShouSuccess);
-                            this.lstChuShouStats.Items.Add($"第{step}期中: {count}次。");
+                            this.lstChuShouStats.Items.Add($"第{step}期中: {stepRecords.Count}次。(中奖{successCount}次)");
                         }
                         
                         // 统计出手周期完成情况：从第1期到第8期中奖的各种情况
