@@ -14,3 +14,4 @@ D:\code\cp\AiGenerate\CalcFen\obj\Debug\net6.0-windows\CalcFen.genruntimeconfig.
 D:\code\cp\AiGenerate\CalcFen\obj\Debug\net6.0-windows\ref\CalcFen.dll
 D:\code\cp\AiGenerate\CalcFen\obj\Debug\net6.0-windows\CalcFen.MainForm.resources
 D:\code\cp\AiGenerate\CalcFen\obj\Debug\net6.0-windows\CalcFen.csproj.GenerateResource.cache
+D:\code\cp\AiGenerate\CalcFen\obj\Debug\net6.0-windows\CalcFen.sourcelink.json

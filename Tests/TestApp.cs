@@ -45,6 +45,16 @@ namespace TestApp
                 scoringEngine.AddRule(new KValueBelowMiddleNoBetRule());
                 scoringEngine.AddRule(new TrendSegmentNoBetRule());
                 scoringEngine.AddRule(new ConfirmPointBeforeTrendRule());
+                scoringEngine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
+                scoringEngine.AddRule(new ThreeTrackSameDirectionRule());
+                scoringEngine.AddRule(new TwoTrackSameDirectionRule());
+                scoringEngine.AddRule(new TrackOppositeDirectionRule());
+                scoringEngine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
+                scoringEngine.AddRule(new KValueNearUpperRailRule());
+                scoringEngine.AddRule(new YiLouValueRule());
+                scoringEngine.AddRule(new BollingerUpperDeclineRule());
+                scoringEngine.AddRule(new ContinuousChuShouLimitRule()); // 添加连续出手限制评分规则
+                scoringEngine.AddRule(new SecondChuShouLimitRule()); // 添加连续第二手限制规则
                 
                 // 对最后几期计算分数
                 for(int i = Math.Max(0, results.Count - 3); i < results.Count; i++)

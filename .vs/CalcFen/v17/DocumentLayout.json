@@ -3,43 +3,36 @@
   "WorkspaceRootPath": "D:\\code\\cp\\AiGenerate\\CalcFen\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\models\\lotterydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:models\\lotterydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\core\\lotteryprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:core\\lotteryprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\models\\lotterydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:models\\lotterydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\scorer\\basescorerule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:scorer\\basescorerule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D2D5A6B6-8E1C-4C7D-A923-AC2C00B7C97E}|Tests\\TestApp.csproj|d:\\code\\cp\\aigenerate\\calcfen\\tests\\testapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D2D5A6B6-8E1C-4C7D-A923-AC2C00B7C97E}|Tests\\TestApp.csproj|solutionrelative:tests\\testapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\calcfen.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:calcfen.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\positionnumber.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:positionnumber.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -49,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -57,77 +50,90 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "MainForm.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeDocumentMoniker": "MainForm.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs [\u8BBE\u8BA1]",
               "RelativeToolTip": "MainForm.cs [\u8BBE\u8BA1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T12:21:47.912Z",
+              "WhenOpened": "2026-01-27T07:09:37.981Z",
               "EditorCaption": " [\u8BBE\u8BA1]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MainForm.Designer.cs",
-              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.Designer.cs",
-              "RelativeDocumentMoniker": "MainForm.Designer.cs",
-              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.Designer.cs",
-              "RelativeToolTip": "MainForm.Designer.cs",
-              "ViewState": "AQIAANIAAAAAAAAAAAAewNsAAAA9AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T07:42:25.991Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeDocumentMoniker": "MainForm.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeToolTip": "MainForm.cs",
-              "ViewState": "AQIAADMAAAAAAAAAAIAxwEcAAAA0AAAA",
+              "ViewState": "AQIAAPgBAAAAAAAAAAAvwPoBAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T06:19:09.434Z",
+              "WhenOpened": "2026-01-27T06:46:16.249Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "LotteryData.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Models\\LotteryData.cs",
               "RelativeDocumentMoniker": "Models\\LotteryData.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Models\\LotteryData.cs",
               "RelativeToolTip": "Models\\LotteryData.cs",
-              "ViewState": "AQIAABQAAAAAAAAAAAAUwC8AAAAbAAAA",
+              "ViewState": "AQIAABQAAAAAAAAAAAA0wBsAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T04:58:55.019Z",
+              "WhenOpened": "2026-01-27T05:21:53.703Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "PositionNumber.cs",
-              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\PositionNumber.cs",
-              "RelativeDocumentMoniker": "PositionNumber.cs",
-              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\PositionNumber.cs",
-              "RelativeToolTip": "PositionNumber.cs",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAAEQAAAAuAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T04:58:37.668Z",
+              "DocumentIndex": 5,
+              "Title": "CalcFen",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj",
+              "RelativeDocumentMoniker": "CalcFen.csproj",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\CalcFen.csproj",
+              "RelativeToolTip": "CalcFen.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-27T02:44:28.244Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "LotteryProcessor.cs",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
+              "RelativeDocumentMoniker": "Core\\LotteryProcessor.cs",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
+              "RelativeToolTip": "Core\\LotteryProcessor.cs",
+              "ViewState": "AQIAAH8BAAAAAAAAAAAlwIkBAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T02:16:33.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CalcFen.AssemblyInfo.cs",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
+              "RelativeToolTip": "obj\\Debug\\net6.0-windows\\CalcFen.AssemblyInfo.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAUwAsAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T02:12:08.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ScoreRules.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\Rules\\ScoreRules.cs",
               "RelativeDocumentMoniker": "Scorer\\Rules\\ScoreRules.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\Rules\\ScoreRules.cs",
               "RelativeToolTip": "Scorer\\Rules\\ScoreRules.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAoAAAA7AAAA",
+              "ViewState": "AQIAAN8BAAAAAAAAAAAvwO8BAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-20T04:48:23.195Z",
               "EditorCaption": ""
@@ -135,53 +141,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "BaseScoreRule.cs",
-              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\BaseScoreRule.cs",
-              "RelativeDocumentMoniker": "Scorer\\BaseScoreRule.cs",
-              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\BaseScoreRule.cs",
-              "RelativeToolTip": "Scorer\\BaseScoreRule.cs",
-              "ViewState": "AQIAABkAAAAAAAAAAAAewCgAAAAAAAAA",
+              "Title": ".NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
+              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
+              "RelativeDocumentMoniker": "obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
+              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
+              "RelativeToolTip": "obj\\Debug\\net6.0-windows\\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAALAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T04:48:21.608Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LotteryProcessor.cs",
-              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
-              "RelativeDocumentMoniker": "Core\\LotteryProcessor.cs",
-              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
-              "RelativeToolTip": "Core\\LotteryProcessor.cs",
-              "ViewState": "AQIAABEBAAAAAAAAAAApwCQBAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T04:46:23.935Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "TestApp.cs",
-              "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Tests\\TestApp.cs",
-              "RelativeDocumentMoniker": "Tests\\TestApp.cs",
-              "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Tests\\TestApp.cs",
-              "RelativeToolTip": "Tests\\TestApp.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAIAxwCwAAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-20T04:33:11.069Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Microsoft.Common.CurrentVersion.targets",
-              "DocumentMoniker": "d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ToolTip": "d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeToolTip": "..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ViewState": "AQIAAEgHAAAAAAAAAADgv1YHAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2026-01-20T04:33:05.409Z",
+              "WhenOpened": "2026-01-27T02:12:03.813Z",
               "EditorCaption": ""
             }
           ]

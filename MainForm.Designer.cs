@@ -28,190 +28,189 @@ namespace CalcFen
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLoadFile = new System.Windows.Forms.Button();
-            this.btnProcessSingle = new System.Windows.Forms.Button();
-            this.btnProcessMultiple = new System.Windows.Forms.Button();
-            this.lstQiHao = new System.Windows.Forms.ListBox();
-            this.lstScores = new System.Windows.Forms.ListBox();
-            this.lblQiHaoTitle = new System.Windows.Forms.Label();
-            this.lblScoreTitle = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.txt350Numbers = new System.Windows.Forms.TextBox();
-            this.lbl350Numbers = new System.Windows.Forms.Label();
-            this.btnSet350Numbers = new System.Windows.Forms.Button();
-            this.btnGenerate350Numbers = new System.Windows.Forms.Button();
-            this.lstChuShouStats = new System.Windows.Forms.ListBox();
-            this.lblChuShouStatsTitle=new Label();
-            this.SuspendLayout();
+            btnLoadFile = new Button();
+            btnProcessSingle = new Button();
+            btnProcessMultiple = new Button();
+            lstQiHao = new ListBox();
+            lstScores = new ListBox();
+            lblQiHaoTitle = new Label();
+            lblScoreTitle = new Label();
+            lblStatus = new Label();
+            btnReset = new Button();
+            txt350Numbers = new TextBox();
+            lbl350Numbers = new Label();
+            btnSet350Numbers = new Button();
+            btnGenerate350Numbers = new Button();
+            lstChuShouStats = new ListBox();
+            lblChuShouStatsTitle = new Label();
+            SuspendLayout();
             // 
             // btnLoadFile
             // 
-            this.btnLoadFile.Location = new System.Drawing.Point(12, 12);
-            this.btnLoadFile.Name = "btnLoadFile";
-            this.btnLoadFile.Size = new System.Drawing.Size(100, 30);
-            this.btnLoadFile.TabIndex = 0;
-            this.btnLoadFile.Text = "加载文件";
-            this.btnLoadFile.UseVisualStyleBackColor = true;
-            this.btnLoadFile.Click += new System.EventHandler(this.btnLoadFile_Click);
+            btnLoadFile.Location = new Point(12, 12);
+            btnLoadFile.Name = "btnLoadFile";
+            btnLoadFile.Size = new Size(100, 30);
+            btnLoadFile.TabIndex = 0;
+            btnLoadFile.Text = "加载文件";
+            btnLoadFile.UseVisualStyleBackColor = true;
+            btnLoadFile.Click += btnLoadFile_Click;
             // 
             // btnProcessSingle
             // 
-            this.btnProcessSingle.Location = new System.Drawing.Point(118, 12);
-            this.btnProcessSingle.Name = "btnProcessSingle";
-            this.btnProcessSingle.Size = new System.Drawing.Size(100, 30);
-            this.btnProcessSingle.TabIndex = 1;
-            this.btnProcessSingle.Text = "处理单期";
-            this.btnProcessSingle.UseVisualStyleBackColor = true;
-            this.btnProcessSingle.Click += new System.EventHandler(this.btnProcessSingle_Click);
+            btnProcessSingle.Location = new Point(118, 12);
+            btnProcessSingle.Name = "btnProcessSingle";
+            btnProcessSingle.Size = new Size(100, 30);
+            btnProcessSingle.TabIndex = 1;
+            btnProcessSingle.Text = "处理单期";
+            btnProcessSingle.UseVisualStyleBackColor = true;
+            btnProcessSingle.Click += btnProcessSingle_Click;
             // 
             // btnProcessMultiple
             // 
-            this.btnProcessMultiple.Location = new System.Drawing.Point(224, 12);
-            this.btnProcessMultiple.Name = "btnProcessMultiple";
-            this.btnProcessMultiple.Size = new System.Drawing.Size(100, 30);
-            this.btnProcessMultiple.TabIndex = 2;
-            this.btnProcessMultiple.Text = "处理多期";
-            this.btnProcessMultiple.UseVisualStyleBackColor = true;
-            this.btnProcessMultiple.Click += new System.EventHandler(this.btnProcessMultiple_Click);
-            // 
-            // btnReset
-            // 
-            this.btnReset.Location = new System.Drawing.Point(330, 12);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(100, 30);
-            this.btnReset.TabIndex = 8;
-            this.btnReset.Text = "重置";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // btnSet350Numbers
-            // 
-            this.btnSet350Numbers.Location = new System.Drawing.Point(436, 12);
-            this.btnSet350Numbers.Name = "btnSet350Numbers";
-            this.btnSet350Numbers.Size = new System.Drawing.Size(100, 30);
-            this.btnSet350Numbers.TabIndex = 11;
-            this.btnSet350Numbers.Text = "设置350注";
-            this.btnSet350Numbers.UseVisualStyleBackColor = true;
-            this.btnSet350Numbers.Click += new System.EventHandler(this.btnSet350Numbers_Click);
-            // 
-            // btnGenerate350Numbers
-            // 
-            this.btnGenerate350Numbers.Location = new System.Drawing.Point(542, 12);
-            this.btnGenerate350Numbers.Name = "btnGenerate350Numbers";
-            this.btnGenerate350Numbers.Size = new System.Drawing.Size(120, 30);
-            this.btnGenerate350Numbers.TabIndex = 12;
-            this.btnGenerate350Numbers.Text = "生成随机350注";
-            this.btnGenerate350Numbers.UseVisualStyleBackColor = true;
-            this.btnGenerate350Numbers.Click += new System.EventHandler(this.btnGenerate350Numbers_Click);
-            // 
-            // lbl350Numbers
-            // 
-            this.lbl350Numbers.AutoSize = true;
-            this.lbl350Numbers.Location = new System.Drawing.Point(12, 50);
-            this.lbl350Numbers.Name = "lbl350Numbers";
-            this.lbl350Numbers.Size = new System.Drawing.Size(139, 17);
-            this.lbl350Numbers.TabIndex = 10;
-            this.lbl350Numbers.Text = "350注号码 (用逗号分隔)";
-            // 
-            // txt350Numbers
-            // 
-            this.txt350Numbers.Location = new System.Drawing.Point(12, 70);
-            this.txt350Numbers.Multiline = true;
-            this.txt350Numbers.Name = "txt350Numbers";
-            this.txt350Numbers.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt350Numbers.Size = new System.Drawing.Size(768, 40);
-            this.txt350Numbers.TabIndex = 9;
+            btnProcessMultiple.Location = new Point(224, 12);
+            btnProcessMultiple.Name = "btnProcessMultiple";
+            btnProcessMultiple.Size = new Size(100, 30);
+            btnProcessMultiple.TabIndex = 2;
+            btnProcessMultiple.Text = "处理多期";
+            btnProcessMultiple.UseVisualStyleBackColor = true;
+            btnProcessMultiple.Click += btnProcessMultiple_Click;
             // 
             // lstQiHao
             // 
-            this.lstQiHao.FormattingEnabled = true;
-            this.lstQiHao.ItemHeight = 17;
-            this.lstQiHao.Location = new System.Drawing.Point(12, 130);
-            this.lstQiHao.Name = "lstQiHao";
-            this.lstQiHao.Size = new System.Drawing.Size(300, 250);
-            this.lstQiHao.TabIndex = 3;
-            this.lstQiHao.SelectedIndexChanged += new System.EventHandler(this.lstQiHao_SelectedIndexChanged);
+            lstQiHao.FormattingEnabled = true;
+            lstQiHao.ItemHeight = 17;
+            lstQiHao.Location = new Point(12, 163);
+            lstQiHao.Name = "lstQiHao";
+            lstQiHao.Size = new Size(300, 310);
+            lstQiHao.TabIndex = 3;
+            lstQiHao.SelectedIndexChanged += lstQiHao_SelectedIndexChanged;
             // 
             // lstScores
             // 
-            this.lstScores.FormattingEnabled = true;
-            this.lstScores.ItemHeight = 17;
-            this.lstScores.Location = new System.Drawing.Point(330, 130);
-            this.lstScores.Name = "lstScores";
-            this.lstScores.Size = new System.Drawing.Size(450, 250);
-            this.lstScores.TabIndex = 4;
+            lstScores.FormattingEnabled = true;
+            lstScores.ItemHeight = 17;
+            lstScores.Location = new Point(330, 163);
+            lstScores.Name = "lstScores";
+            lstScores.Size = new Size(450, 310);
+            lstScores.TabIndex = 4;
             // 
             // lblQiHaoTitle
             // 
-            this.lblQiHaoTitle.AutoSize = true;
-            this.lblQiHaoTitle.Location = new System.Drawing.Point(12, 110);
-            this.lblQiHaoTitle.Name = "lblQiHaoTitle";
-            this.lblQiHaoTitle.Size = new System.Drawing.Size(106, 17);
-            this.lblQiHaoTitle.TabIndex = 5;
-            this.lblQiHaoTitle.Text = "期号和开奖号";
+            lblQiHaoTitle.AutoSize = true;
+            lblQiHaoTitle.Location = new Point(12, 143);
+            lblQiHaoTitle.Name = "lblQiHaoTitle";
+            lblQiHaoTitle.Size = new Size(80, 17);
+            lblQiHaoTitle.TabIndex = 5;
+            lblQiHaoTitle.Text = "期号和开奖号";
             // 
             // lblScoreTitle
             // 
-            this.lblScoreTitle.AutoSize = true;
-            this.lblScoreTitle.Location = new System.Drawing.Point(330, 110);
-            this.lblScoreTitle.Name = "lblScoreTitle";
-            this.lblScoreTitle.Size = new System.Drawing.Size(122, 17);
-            this.lblScoreTitle.TabIndex = 6;
-            this.lblScoreTitle.Text = "评分及评分说明";
+            lblScoreTitle.AutoSize = true;
+            lblScoreTitle.Location = new Point(330, 143);
+            lblScoreTitle.Name = "lblScoreTitle";
+            lblScoreTitle.Size = new Size(92, 17);
+            lblScoreTitle.TabIndex = 6;
+            lblScoreTitle.Text = "评分及评分说明";
             // 
             // lblStatus
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(12, 390);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(82, 17);
-            this.lblStatus.TabIndex = 7;
-            this.lblStatus.Text = "就绪";
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(12, 480);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(32, 17);
+            lblStatus.TabIndex = 7;
+            lblStatus.Text = "就绪";
+            // 
+            // btnReset
+            // 
+            btnReset.Location = new Point(330, 12);
+            btnReset.Name = "btnReset";
+            btnReset.Size = new Size(100, 30);
+            btnReset.TabIndex = 8;
+            btnReset.Text = "重置";
+            btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
+            // 
+            // txt350Numbers
+            // 
+            txt350Numbers.Location = new Point(12, 70);
+            txt350Numbers.Multiline = true;
+            txt350Numbers.Name = "txt350Numbers";
+            txt350Numbers.ScrollBars = ScrollBars.Vertical;
+            txt350Numbers.Size = new Size(768, 70);
+            txt350Numbers.TabIndex = 9;
+            // 
+            // lbl350Numbers
+            // 
+            lbl350Numbers.AutoSize = true;
+            lbl350Numbers.Location = new Point(12, 50);
+            lbl350Numbers.Name = "lbl350Numbers";
+            lbl350Numbers.Size = new Size(137, 17);
+            lbl350Numbers.TabIndex = 10;
+            lbl350Numbers.Text = "350注号码 (用逗号分隔)";
+            // 
+            // btnSet350Numbers
+            // 
+            btnSet350Numbers.Location = new Point(436, 12);
+            btnSet350Numbers.Name = "btnSet350Numbers";
+            btnSet350Numbers.Size = new Size(100, 30);
+            btnSet350Numbers.TabIndex = 11;
+            btnSet350Numbers.Text = "设置350注";
+            btnSet350Numbers.UseVisualStyleBackColor = true;
+            btnSet350Numbers.Click += btnSet350Numbers_Click;
+            // 
+            // btnGenerate350Numbers
+            // 
+            btnGenerate350Numbers.Location = new Point(542, 12);
+            btnGenerate350Numbers.Name = "btnGenerate350Numbers";
+            btnGenerate350Numbers.Size = new Size(120, 30);
+            btnGenerate350Numbers.TabIndex = 12;
+            btnGenerate350Numbers.Text = "生成随机350注";
+            btnGenerate350Numbers.UseVisualStyleBackColor = true;
+            btnGenerate350Numbers.Click += btnGenerate350Numbers_Click;
             // 
             // lstChuShouStats
             // 
-            this.lstChuShouStats.FormattingEnabled = true;
-            this.lstChuShouStats.ItemHeight = 17;
-            this.lstChuShouStats.Location = new System.Drawing.Point(12, 435);
-            this.lstChuShouStats.Name = "lstChuShouStats";
-            this.lstChuShouStats.Size = new System.Drawing.Size(768, 157);
-            this.lstChuShouStats.TabIndex = 14;
+            lstChuShouStats.FormattingEnabled = true;
+            lstChuShouStats.ItemHeight = 17;
+            lstChuShouStats.Location = new Point(12, 556);
+            lstChuShouStats.Name = "lstChuShouStats";
+            lstChuShouStats.Size = new Size(768, 157);
+            lstChuShouStats.TabIndex = 14;
             // 
             // lblChuShouStatsTitle
             // 
-            this.lblChuShouStatsTitle.AutoSize = true;
-            this.lblChuShouStatsTitle.Location = new System.Drawing.Point(12, 415);
-            this.lblChuShouStatsTitle.Name = "lblChuShouStatsTitle";
-            this.lblChuShouStatsTitle.Size = new System.Drawing.Size(82, 17);
-            this.lblChuShouStatsTitle.TabIndex = 13;
-            this.lblChuShouStatsTitle.Text = "出手统计";
+            lblChuShouStatsTitle.AutoSize = true;
+            lblChuShouStatsTitle.Location = new Point(12, 536);
+            lblChuShouStatsTitle.Name = "lblChuShouStatsTitle";
+            lblChuShouStatsTitle.Size = new Size(56, 17);
+            lblChuShouStatsTitle.TabIndex = 13;
+            lblChuShouStatsTitle.Text = "出手统计";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 600);
-            this.Controls.Add(this.btnGenerate350Numbers);
-            this.Controls.Add(this.btnSet350Numbers);
-            this.Controls.Add(this.lbl350Numbers);
-            this.Controls.Add(this.txt350Numbers);
-            this.Controls.Add(this.lstChuShouStats);
-            this.Controls.Add(this.lblChuShouStatsTitle);
-            this.Controls.Add(this.btnReset);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.lblScoreTitle);
-            this.Controls.Add(this.lblQiHaoTitle);
-            this.Controls.Add(this.lstScores);
-            this.Controls.Add(this.lstQiHao);
-            this.Controls.Add(this.btnProcessMultiple);
-            this.Controls.Add(this.btnProcessSingle);
-            this.Controls.Add(this.btnLoadFile);
-            this.Name = "MainForm";
-            this.Text = "彩票K线及布林评分系统";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1240, 729);
+            Controls.Add(btnGenerate350Numbers);
+            Controls.Add(btnSet350Numbers);
+            Controls.Add(lbl350Numbers);
+            Controls.Add(txt350Numbers);
+            Controls.Add(lstChuShouStats);
+            Controls.Add(lblChuShouStatsTitle);
+            Controls.Add(btnReset);
+            Controls.Add(lblStatus);
+            Controls.Add(lblScoreTitle);
+            Controls.Add(lblQiHaoTitle);
+            Controls.Add(lstScores);
+            Controls.Add(lstQiHao);
+            Controls.Add(btnProcessMultiple);
+            Controls.Add(btnProcessSingle);
+            Controls.Add(btnLoadFile);
+            Name = "MainForm";
+            Text = "彩票K线及布林评分系统";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

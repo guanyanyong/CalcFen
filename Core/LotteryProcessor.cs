@@ -296,8 +296,23 @@ namespace CpCodeSelect.Core
             bool isKValueAboveMiddle = currentData.BollingerBands != null && 
                                       currentData.KValue >= currentData.BollingerBands.MiddleValue;
             
+            // 检查是否连续出手超过2期，如果是则必须停一期
+            bool canContinueChuShou = true;
+            if (HistoryData.Count >= 2)
+            {
+                // 检查前两期是否都在出手
+                bool previousTwoAreChuShou = HistoryData[HistoryData.Count - 1].IsChuShou && 
+                                             HistoryData[HistoryData.Count - 2].IsChuShou;
+                
+                if (previousTwoAreChuShou)
+                {
+                    // 如果前两期都在出手，则当前期不能出手，必须停一期
+                    canContinueChuShou = false;
+                }
+            }
+            
             // 在当前期决定是否出手
-            if (isScoreHighEnough && isNotInTrendSegment && isKValueAboveMiddle)
+            if (isScoreHighEnough && isNotInTrendSegment && isKValueAboveMiddle && canContinueChuShou)
             {
                 currentData.IsChuShou = true;
                 
@@ -342,6 +357,29 @@ namespace CpCodeSelect.Core
                             }
                         }
                     }
+                    else if (previousData.CycleStep == 8) // 如果上一期出手是第8步
+                    {
+                        // 如果当前期没有中奖，并且上一期出手是第8步，则周期爆掉
+                        if (!currentData.IsZhongJiang)
+                        {
+                            // 标记整个周期爆掉
+                            int currentCycleNumber = previousData.CycleNumber;
+                            for (int i = HistoryData.Count - 1; i >= 0; i--)
+                            {
+                                if (HistoryData[i].IsChuShou && 
+                                    HistoryData[i].CycleNumber == currentCycleNumber)
+                                {
+                                    HistoryData[i].IsCycleBurst = true;
+                                    HistoryData[i].IsCycleComplete = false; // 爆掉，不是完成
+                                }
+                                else if (HistoryData[i].CycleNumber < currentCycleNumber)
+                                {
+                                    // 如果周期号更小，说明不再同一周期内，可以停止查找
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -350,7 +388,7 @@ namespace CpCodeSelect.Core
         /// 计算出手周期和出手手数
         /// </summary>
         /// <param name="currentData"></param>
-        private void CalculateChuShouCycleAndHandNumber(LotteryData currentData)
+        public void CalculateChuShouCycleAndHandNumber(LotteryData currentData)
         {
             // 如果没有出手，直接返回
             if (!currentData.IsChuShou)
@@ -362,45 +400,59 @@ namespace CpCodeSelect.Core
                 return;
             }
 
-            int currentCycleNumber = 0;
-            int cycleStep = 0;
+            // 初始化默认值
+            int currentCycleNumber = 1;
+            int cycleStep = 1;
 
-            // 寻找最新的未完成且未爆掉的周期
-            bool foundInCurrentCycle = false;
+            // 从最近的历史数据往前查找，找到上一个出手
+            int lastChuShouIndex = -1;
             for (int i = HistoryData.Count - 1; i >= 0; i--)
             {
                 if (HistoryData[i].IsChuShou)
                 {
-                    // 检查这个出手是否属于还未完成或爆掉的周期
-                    if (HistoryData[i].IsCycleComplete || HistoryData[i].IsCycleBurst)
-                    {
-                        // 这个出手属于已经结束的周期，这意味着我们要开始一个新周期
-                        currentCycleNumber = HistoryData[i].CycleNumber + 1;
-                        cycleStep = 1;
-                        break;
-                    }
-                    else
-                    {
-                        // 这个出手属于仍在进行的周期
-                        currentCycleNumber = HistoryData[i].CycleNumber;
-                        cycleStep = HistoryData[i].CycleStep + 1;
-                        foundInCurrentCycle = true;
-                        break;
-                    }
+                    lastChuShouIndex = i;
+                    break;
                 }
             }
 
-            // 如果没有找到之前的出手，开始第一个周期
-            if (currentCycleNumber == 0)
+            if (lastChuShouIndex == -1)
             {
+                // 这是系统中的第一次出手，开始第一个周期的第一步
                 currentCycleNumber = 1;
                 cycleStep = 1;
             }
+            else
+            {
+                var lastChuShou = HistoryData[lastChuShouIndex];
+                
+                // 检查上一次出手的周期状态
+                // 注意：使用IsCycleComplete和IsCycleBurst字段来判断上一个周期是否已完成
+                bool lastCycleWasComplete = lastChuShou.IsCycleComplete || lastChuShou.IsCycleBurst;
+                
+                if (lastCycleWasComplete)
+                {
+                    // 上一周期已完成或爆掉，当前出手应开始新周期的第一步
+                    currentCycleNumber = lastChuShou.CycleNumber + 1;
+                    cycleStep = 1;
+                }
+                else
+                {
+                    // 上一周期仍在进行中，当前出手属于同一个周期，步骤+1
+                    currentCycleNumber = lastChuShou.CycleNumber;
+                    cycleStep = lastChuShou.CycleStep + 1;
+                    // 确保步骤不超过8
+                    if (cycleStep > 8) cycleStep = 8;
+                }
+            }
 
+            // 设置当前出手的周期信息
             currentData.CycleNumber = currentCycleNumber;
             currentData.CycleStep = cycleStep;
             currentData.IsPartOfCycle = true;
-            currentData.HandNumber = cycleStep; // 在8期周期内，HandNumber就是CycleStep
+            currentData.HandNumber = cycleStep;
+            
+            // 调试输出（如果需要）
+            // Console.WriteLine($"周期[{currentCycleNumber}] 步骤[{cycleStep}] - 期号: {currentData.QiHao}");
         }
 
         /// <summary>
@@ -467,14 +519,15 @@ namespace CpCodeSelect.Core
                             }
                         }
 
-                        // 如果找到了大遗漏后的第一次中奖，并且当前期相对于该第一次中奖在理论周期内（遗漏值<=1）中奖
+                        // 如果找到了大遗漏后的第一次中奖
                         if (firstWinAfterGap >= 0)
                         {
-                            // 计算从第一次中奖到当前期的遗漏值
-                            int gapFromFirstWin = HistoryData.Count - firstWinAfterGap;
+                            // 当前期是否相对于第一次中奖在理论周期内
+                            // 计算从第一次中奖到现在有多少期（不包含第一次中奖期本身）
+                            int periodsSinceFirstWin = HistoryData.Count - firstWinAfterGap;
                             
-                            // 当前期是否在理论周期内（遗漏值<=1）
-                            bool isInCycle = currentData.YiLouValue <= 1 && gapFromFirstWin <= 2;
+                            // 当前期是否在理论周期内（遗漏值≤1 且 自从第一次中奖以来期数不超过2）
+                            bool isInCycle = currentData.YiLouValue <= 1 && periodsSinceFirstWin <= 2;
                             
                             if (isInCycle)
                             {
@@ -511,54 +564,99 @@ namespace CpCodeSelect.Core
         /// <param name="currentData"></param>
         private void CheckTrendSegment(LotteryData currentData)
         {
-            // 趋势段：大遗漏过后理论周期内连续开出4个后就是趋势段形成
-            // 理论周期是2，即遗漏值为0或1
-            if (!currentData.IsZhongJiang)
+            // 如果当前期是大遗漏，则趋势段结束或不开始，重新计算从当前期开始
+            if (currentData.IsDaYiLou)
+            {
+                currentData.IsQuShiDuan = false;
+                currentData.QuShiDuanZhongJiangCount = 0; // 重置趋势段中奖计数
+                currentData.DaYiLouHouLiLunZhouQiNeiZhongJiangShu = 0; // 重置大遗漏后理论周期内中奖数
                 return;
+            }
 
-            // 查找最近的大遗漏
-            int lastBigGapIndex = -1;
+            // 如果历史数据为空，当前期不是趋势段
+            if (HistoryData.Count == 0)
+            {
+                currentData.IsQuShiDuan = false;
+                currentData.QuShiDuanZhongJiangCount = 0;
+                currentData.DaYiLouHouLiLunZhouQiNeiZhongJiangShu = 0;
+                return;
+            }
+
+            // 简化的趋势段逻辑：只按大遗漏后形成趋势段的逻辑
+            // 大遗漏过后理论周期内开出第4个中奖（或者到达第5个期如4中1挂）的当期开始是趋势段
+            int latestBigGapIndex = -1;
             for (int i = HistoryData.Count - 1; i >= 0; i--)
             {
                 if (HistoryData[i].IsDaYiLou)
                 {
-                    lastBigGapIndex = i;
+                    latestBigGapIndex = i;
                     break;
                 }
             }
 
-            if (lastBigGapIndex >= 0)
+            if (latestBigGapIndex >= 0)
             {
-                // 从大遗漏后开始寻找理论周期内的中奖次数
-                int winsInCycleAfterBigGap = 0;
-
-                for (int i = lastBigGapIndex + 1; i < HistoryData.Count; i++)
+                // 重新计算：从大遗漏后的第一期开始，统计理论周期内的中奖次数
+                int winsAfterBigGap = 0;
+                
+                // 从大遗漏后第一期开始计算，直到当前期
+                for (int i = latestBigGapIndex + 1; i < HistoryData.Count; i++)
                 {
-                    if (HistoryData[i].IsZhongJiang)
+                    // 只统计中奖且在理论周期内（遗漏值≤1）的
+                    if (HistoryData[i].IsZhongJiang && HistoryData[i].YiLouValue <= 1)
                     {
-                        // 检查是否在理论周期内（遗漏值 <= 1）
-                        if (HistoryData[i].YiLouValue <= 1)
-                        {
-                            winsInCycleAfterBigGap++;
-                        }
+                        winsAfterBigGap++;
                     }
                 }
-
-                // 判断当前期是否在理论周期内
-                if (currentData.YiLouValue <= 1)
+                
+                // 如果当前期也在理论周期内（遗漏值≤1）且中奖，则计入
+                if (currentData.IsZhongJiang && currentData.YiLouValue <= 1)
                 {
-                    winsInCycleAfterBigGap++; // 加上当前期
+                    winsAfterBigGap++;
                 }
 
-                // 如果大遗漏过后理论周期内开出4个及以上，就是趋势段形成
-                if (winsInCycleAfterBigGap >= 4)
+                // 记录大遗漏后理论周期内的中奖数
+                currentData.DaYiLouHouLiLunZhouQiNeiZhongJiangShu = winsAfterBigGap;
+
+                // 判断当前期是否在大遗漏后的理论周期内（遗漏值≤1）
+                bool isWithinTheoryPeriod = currentData.YiLouValue <= 1;
+                
+                // 计算大遗漏后理论周期内的总期数（包括中奖和未中奖）
+                int totalTheoryPeriodCount = 0;
+                for (int i = latestBigGapIndex + 1; i < HistoryData.Count; i++)
+                {
+                    if (HistoryData[i].YiLouValue <= 1) // 在理论周期内
+                    {
+                        totalTheoryPeriodCount++;
+                    }
+                }
+                if (isWithinTheoryPeriod) // 当前期也在理论周期内
+                {
+                    totalTheoryPeriodCount++;
+                }
+                
+                // 趋势段条件：当前期在大遗漏后的理论周期内，且满足以下条件之一：
+                // 1. 理论周期内已经有4个中奖
+                // 2. 理论周期内已经有5个期（如4中1挂）
+                bool shouldEnterTrendSegment = isWithinTheoryPeriod && (winsAfterBigGap >= 4 || totalTheoryPeriodCount >= 5);
+
+                if (shouldEnterTrendSegment)
                 {
                     currentData.IsQuShiDuan = true;
+                    currentData.QuShiDuanZhongJiangCount = winsAfterBigGap; // 更新趋势段中奖计数
                 }
                 else
                 {
                     currentData.IsQuShiDuan = false;
+                    currentData.QuShiDuanZhongJiangCount = winsAfterBigGap; // 更新趋势段中奖计数
                 }
+            }
+            else
+            {
+                // 如果没有找到大遗漏，当前期不是趋势段
+                currentData.IsQuShiDuan = false;
+                currentData.QuShiDuanZhongJiangCount = 0;
+                currentData.DaYiLouHouLiLunZhouQiNeiZhongJiangShu = 0;
             }
         }
 

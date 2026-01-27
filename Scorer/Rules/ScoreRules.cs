@@ -49,7 +49,75 @@ namespace CpCodeSelect.Scorer.Rules
 
         public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
         {
-            return currentData.IsQueRenDian && !currentData.IsQuShiDuan;
+            // 原始逻辑：当前期是确认点且不在趋势段内
+            if (currentData.IsQueRenDian && !currentData.IsQuShiDuan)
+            {
+                return true;
+            }
+            
+            // 扩展逻辑：如果当前期不是确认点，但处于确认点后的序列中，且未形成趋势段
+            if (!currentData.IsZhongJiang && !currentData.IsDaYiLou) // 只考虑中奖或非大遗漏的情况
+            {
+                // 查找历史上最近的确认点
+                for (int i = historyData.Count - 1; i >= 0; i--)
+                {
+                    if (historyData[i].IsQueRenDian)
+                    {
+                        // 检查确认点后是否有大遗漏
+                        bool hasBigGapAfterConfirmPoint = false;
+                        for (int j = i + 1; j < historyData.Count; j++)
+                        {
+                            if (historyData[j].IsDaYiLou)
+                            {
+                                hasBigGapAfterConfirmPoint = true;
+                                break;
+                            }
+                        }
+                        
+                        // 如果确认点后还没有大遗漏，则当前仍处于确认点后的序列中
+                        if (!hasBigGapAfterConfirmPoint)
+                        {
+                            return !currentData.IsQuShiDuan; // 只要不是趋势段就加分
+                        }
+                        else
+                        {
+                            break; // 确认点后已经有大遗漏，跳出循环
+                        }
+                    }
+                }
+            }
+            else if (currentData.IsZhongJiang)
+            {
+                // 如果当前期是中奖，检查是否处于确认点后的序列中
+                for (int i = historyData.Count - 1; i >= 0; i--)
+                {
+                    if (historyData[i].IsQueRenDian)
+                    {
+                        // 检查确认点后是否有大遗漏
+                        bool hasBigGapAfterConfirmPoint = false;
+                        for (int j = i + 1; j < historyData.Count; j++)
+                        {
+                            if (historyData[j].IsDaYiLou)
+                            {
+                                hasBigGapAfterConfirmPoint = true;
+                                break;
+                            }
+                        }
+                        
+                        // 如果确认点后还没有大遗漏，则当前仍处于确认点后的序列中
+                        if (!hasBigGapAfterConfirmPoint)
+                        {
+                            return !currentData.IsQuShiDuan; // 只要不是趋势段就加分
+                        }
+                        else
+                        {
+                            break; // 确认点后已经有大遗漏，跳出循环
+                        }
+                    }
+                }
+            }
+            
+            return false;
         }
     }
 
@@ -334,6 +402,141 @@ namespace CpCodeSelect.Scorer.Rules
         public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
         {
             return currentData.YiLouValue >= 2; // 遗漏值大于等于2时规则有效
+        }
+    }
+
+    /// <summary>
+    /// 布林上轨下降评分规则 - 当布林上轨在最近5期内有下降时，减50分
+    /// </summary>
+    public class BollingerUpperDeclineRule : BaseScoreRule
+    {
+        public override string RuleName => "布林上轨下降";
+        public override string Description => "布林上轨在最近5期内有下降时，减50分";
+        public override int ScoreValue => -50;
+
+        public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
+        {
+            // 需要有足够的数据和布林带信息
+            if (historyData.Count < 2 || currentData.BollingerBands == null)
+                return false;
+
+            // 检查最近5期是否有布林上轨数据和下降情况
+            int checkCount = Math.Min(5, historyData.Count);
+            
+            // 遍历最近的checkCount期，检查是否存在上轨下降
+            for (int i = historyData.Count - checkCount; i < historyData.Count - 1; i++)
+            {
+                var currentBollinger = historyData[i].BollingerBands;
+                var nextBollinger = historyData[i + 1].BollingerBands;
+                
+                if (currentBollinger != null && nextBollinger != null)
+                {
+                    // 如果前一期的上轨值大于后一期的上轨值，表示上轨下降
+                    if (currentBollinger.BollUpperValue > nextBollinger.BollUpperValue)
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 连续出手限制评分规则 - 连续出手2期后，第3期必须停一期
+    /// </summary>
+    public class ContinuousChuShouLimitRule : BaseScoreRule
+    {
+        public override string RuleName => "连续出手限制";
+        public override string Description => "连续出手2期后，第3期必须停一期";
+        public override int ScoreValue => -1000; // 分数很低以阻止出手
+
+        public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
+        {
+            if (historyData.Count < 2)
+                return false;
+
+            // 检查前两期是否都在出手
+            bool previousTwoAreChuShou = historyData[historyData.Count - 1].IsChuShou && 
+                                         historyData[historyData.Count - 2].IsChuShou;
+            
+            // 如果前两期都在出手，则当前期评分大幅降低，阻止出手
+            return previousTwoAreChuShou;
+        }
+    }
+
+    /// <summary>
+    /// 连续第二手限制规则 - 如果连续出手第二期，但不在确认点后区域或已形成趋势段，减500分
+    /// </summary>
+    public class SecondChuShouLimitRule : BaseScoreRule
+    {
+        public override string RuleName => "连续第二手限制";
+        public override string Description => "如果连续出手第二期，但不在确认点后区域或已形成趋势段，减500分";
+        public override int ScoreValue => -500; // 减500分以阻止出手
+
+        public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
+        {
+            if (historyData.Count < 1)
+                return false;
+
+            // 检查前一期是否出手
+            bool previousChuShou = historyData[historyData.Count - 1].IsChuShou;
+
+            // 检查当前期是否满足基础的出手条件（这相当于判断是否可能出手）
+            // 评分规则在调用时，会基于当前数据状态来判断，无需依赖currentData.Score
+            bool isNotInTrendSegment = !currentData.IsQuShiDuan;
+            bool isKValueAboveMiddle = currentData.BollingerBands != null && 
+                                      currentData.KValue >= currentData.BollingerBands.MiddleValue;
+
+            // 如果前一期出手，且当前期满足基本出手条件（可能出手），检查是否在合适位置
+            if (previousChuShou && isNotInTrendSegment && isKValueAboveMiddle)
+            {
+                // 检查当前是否不在确认点后区域
+                bool notInConfirmPointArea = !IsInConfirmPointArea(currentData, historyData);
+                
+                // 检查是否已形成趋势段
+                bool hasFormedTrendSegment = currentData.IsQuShiDuan;
+
+                // 如果不在确认点后区域 或 已形成趋势段，则应用规则减500分
+                return notInConfirmPointArea || hasFormedTrendSegment;
+            }
+
+            return false;
+        }
+
+        private bool IsInConfirmPointArea(LotteryData currentData, List<LotteryData> historyData)
+        {
+            // 检查当前期是否处于确认点后的序列中
+            // 首先检查当前期本身是否是确认点
+            if (currentData.IsQueRenDian)
+            {
+                return true; // 如果当前期本身就是确认点，那么肯定是在确认点后序列中
+            }
+            
+            // 从最近的期开始往前查找，找到最近的一个确认点
+            for (int i = historyData.Count - 1; i >= 0; i--)
+            {
+                // 如果找到了确认点
+                if (historyData[i].IsQueRenDian)
+                {
+                    // 检查从这个确认点之后到当前期之间是否有大遗漏
+                    for (int j = i + 1; j < historyData.Count; j++)
+                    {
+                        if (historyData[j].IsDaYiLou)
+                        {
+                            // 如果确认点后存在大遗漏，那么当前期不在确认点后序列中
+                            return false;
+                        }
+                    }
+                    
+                    // 如果确认点后直到当前期都没有大遗漏，说明当前期在确认点后序列中
+                    return true;
+                }
+            }
+            
+            // 没有找到确认点，所以不在确认点后区域
+            return false;
         }
     }
 }

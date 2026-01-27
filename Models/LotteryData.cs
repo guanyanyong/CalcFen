@@ -17,6 +17,7 @@ namespace CpCodeSelect.Model
         public bool IsQueRenDian { get; set; }
         public bool IsQuShiDuan { get; set; }
         public int QuShiDuanZhongJiangCount { get; set; }
+        public int DaYiLouHouLiLunZhouQiNeiZhongJiangShu { get; set; } // 大遗漏后理论周期内中奖数
         public int LianXuZhongJiangCount { get; set; }
         public int LianXuWeiZhongJiangCount { get; set; }
         public bool IsChuShou { get; set; }
@@ -40,6 +41,7 @@ namespace CpCodeSelect.Model
             CycleStep = 0;
             IsCycleComplete = false;
             IsCycleBurst = false;
+            DaYiLouHouLiLunZhouQiNeiZhongJiangShu = 0; // 初始化大遗漏后理论周期内中奖数
         }
     }
 
