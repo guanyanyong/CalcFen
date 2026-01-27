@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CalcFen")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bda872579ecf2e194cd5a8f7f5158117e9716256")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bffc6583b867abb9699752129b21c622b46aab6f")]
 [assembly: System.Reflection.AssemblyProductAttribute("CalcFen")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CalcFen")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -386,6 +386,7 @@ namespace CpCodeSelect.Core
         
         /// <summary>
         /// 计算出手周期和出手手数
+        /// 重新设计：基于当前数据向前查找，从最近的已完成周期开始计算当前出手的周期信息
         /// </summary>
         /// <param name="currentData"></param>
         public void CalculateChuShouCycleAndHandNumber(LotteryData currentData)
@@ -400,59 +401,75 @@ namespace CpCodeSelect.Core
                 return;
             }
 
-            // 初始化默认值
-            int currentCycleNumber = 1;
-            int cycleStep = 1;
-
-            // 从最近的历史数据往前查找，找到上一个出手
-            int lastChuShouIndex = -1;
-            for (int i = HistoryData.Count - 1; i >= 0; i--)
+            // 找到当前出手在历史数据中的索引
+            int currentIndex = HistoryData.IndexOf(currentData);
+            if (currentIndex == -1)
             {
-                if (HistoryData[i].IsChuShou)
+                return;
+            }
+
+            // 从当前数据向前查找，确定当前出手的周期编号和步骤
+            int currentCycleNumber = 1;
+            int currentCycleStep = 1;
+
+            // 寻找最近一个已完成/爆掉的周期
+            int lastCompletedCycleIndex = -1;
+            int lastCompletedCycleNumber = 0;
+            
+            for (int i = currentIndex - 1; i >= 0; i--)
+            {
+                var data = HistoryData[i];
+                if (data.IsChuShou && (data.IsCycleComplete || data.IsCycleBurst))
                 {
-                    lastChuShouIndex = i;
+                    // 找到了最近一个已完成的周期
+                    lastCompletedCycleIndex = i;
+                    lastCompletedCycleNumber = data.CycleNumber;
                     break;
                 }
             }
 
-            if (lastChuShouIndex == -1)
+            if (lastCompletedCycleIndex == -1)
             {
-                // 这是系统中的第一次出手，开始第一个周期的第一步
-                currentCycleNumber = 1;
-                cycleStep = 1;
+                // 没有找到已完成的周期之前，需要从头开始计算此周期中的步数
+                // 找到当前周期的第一个出手（即最近完成周期之后的第一个出手，或从头开始）
+                
+                // 计算从上次完成周期后（或从头）到当前出手的步数
+                int stepCount = 1; // 当前出手作为第一步（或第n步）
+                
+                // 从当前出手的前一个开始向前查找，直到找到上一个完成的周期或到达数据开头
+                for (int i = currentIndex - 1; i >= 0; i--)
+                {
+                    if (HistoryData[i].IsChuShou)
+                    {
+                        // 如果找到一个已完成的周期的出手，则停止
+                        if (HistoryData[i].IsCycleComplete || HistoryData[i].IsCycleBurst)
+                        {
+                            break;
+                        }
+                        // 否则增加步数
+                        stepCount++;
+                    }
+                }
+                
+                // 当前出手在这个周期中是第 stepCount 步，但不超过8
+                currentCycleNumber = 1; // 因为没有找到之前的完成周期，所以从第1周期开始
+                currentCycleStep = Math.Min(stepCount, 8);
             }
             else
             {
-                var lastChuShou = HistoryData[lastChuShouIndex];
-                
-                // 检查上一次出手的周期状态
-                // 注意：使用IsCycleComplete和IsCycleBurst字段来判断上一个周期是否已完成
-                bool lastCycleWasComplete = lastChuShou.IsCycleComplete || lastChuShou.IsCycleBurst;
-                
-                if (lastCycleWasComplete)
-                {
-                    // 上一周期已完成或爆掉，当前出手应开始新周期的第一步
-                    currentCycleNumber = lastChuShou.CycleNumber + 1;
-                    cycleStep = 1;
-                }
-                else
-                {
-                    // 上一周期仍在进行中，当前出手属于同一个周期，步骤+1
-                    currentCycleNumber = lastChuShou.CycleNumber;
-                    cycleStep = lastChuShou.CycleStep + 1;
-                    // 确保步骤不超过8
-                    if (cycleStep > 8) cycleStep = 8;
-                }
+                // 找到了最近的完成周期，当前出手属于下一个新周期
+                currentCycleNumber = lastCompletedCycleNumber + 1;
+                currentCycleStep = 1; // 属于新周期，是第一步
             }
 
             // 设置当前出手的周期信息
             currentData.CycleNumber = currentCycleNumber;
-            currentData.CycleStep = cycleStep;
+            currentData.CycleStep = currentCycleStep;
             currentData.IsPartOfCycle = true;
-            currentData.HandNumber = cycleStep;
+            currentData.HandNumber = currentCycleStep;
             
             // 调试输出（如果需要）
-            // Console.WriteLine($"周期[{currentCycleNumber}] 步骤[{cycleStep}] - 期号: {currentData.QiHao}");
+            // Console.WriteLine($"周期[{currentData.CycleNumber}] 步骤[{currentData.CycleStep}] - 期号: {currentData.QiHao}");
         }
 
         /// <summary>

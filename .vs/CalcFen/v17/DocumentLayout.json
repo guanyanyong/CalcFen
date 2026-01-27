@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\core\\lotteryprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:core\\lotteryprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|solutionrelative:scorer\\rules\\scorerules.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B0A94730-1C4D-48D1-A955-85D730C8C9E3}|CalcFen.csproj|d:\\code\\cp\\aigenerate\\calcfen\\models\\lotterydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -68,7 +68,7 @@
               "RelativeDocumentMoniker": "MainForm.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\MainForm.cs",
               "RelativeToolTip": "MainForm.cs",
-              "ViewState": "AQIAAPgBAAAAAAAAAAAvwPoBAAARAAAA",
+              "ViewState": "AQIAAPsCAAAAAAAAAAAlwAsDAABEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-27T06:46:16.249Z",
               "EditorCaption": ""
@@ -101,13 +101,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "LotteryProcessor.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
               "RelativeDocumentMoniker": "Core\\LotteryProcessor.cs",
               "ToolTip": "D:\\code\\cp\\AiGenerate\\CalcFen\\Core\\LotteryProcessor.cs",
               "RelativeToolTip": "Core\\LotteryProcessor.cs",
-              "ViewState": "AQIAAH8BAAAAAAAAAAAlwIkBAAAMAAAA",
+              "ViewState": "AQIAAH8BAAAAAAAAAAAlwIcBAABOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-27T02:16:33.306Z",
               "EditorCaption": ""
@@ -127,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ScoreRules.cs",
               "DocumentMoniker": "D:\\code\\cp\\AiGenerate\\CalcFen\\Scorer\\Rules\\ScoreRules.cs",
               "RelativeDocumentMoniker": "Scorer\\Rules\\ScoreRules.cs",
