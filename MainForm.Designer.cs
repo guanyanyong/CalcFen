@@ -175,7 +175,7 @@ namespace CalcFen
             lstChuShouStats.ItemHeight = 17;
             lstChuShouStats.Location = new Point(12, 556);
             lstChuShouStats.Name = "lstChuShouStats";
-            lstChuShouStats.Size = new Size(768, 157);
+            lstChuShouStats.Size = new Size(768, 259);
             lstChuShouStats.TabIndex = 14;
             // 
             // lblChuShouStatsTitle
@@ -191,7 +191,7 @@ namespace CalcFen
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1240, 729);
+            ClientSize = new Size(1244, 822);
             Controls.Add(btnGenerate350Numbers);
             Controls.Add(btnSet350Numbers);
             Controls.Add(lbl350Numbers);

@@ -810,7 +810,7 @@ namespace CalcFen
                     this.lstChuShouStats.Items.Add($"中奖率: {(chuShouRecords.Count > 0 ? (double)chuShouRecords.Count(d => d.IsChuShouSuccess) / chuShouRecords.Count * 100 : 0):F2}%");
                     this.lstChuShouStats.Items.Add("");
                     
-                    // 新增：统计8期周期数据
+                    // 按周期分组，然后基于分组结果进行统计
                     var cycles = chuShouRecords
                         .GroupBy(d => d.CycleNumber)
                         .OrderBy(g => g.Key)
@@ -828,15 +828,28 @@ namespace CalcFen
                         this.lstChuShouStats.Items.Add($"完成周期数(中奖完成): {completedCycles}");
                         this.lstChuShouStats.Items.Add($"爆掉周期数(8期不中奖): {burstCycles}");
                         this.lstChuShouStats.Items.Add($"周期成功率: {(totalCycles > 0 ? (double)(totalCycles - burstCycles) / totalCycles * 100 : 0):F2}%");
-                        
-                        // 统计第1-8期的出手情况
+
+                        // 重新基于周期分组进行统计第1-8期的出手分布
                         this.lstChuShouStats.Items.Add("");
                         this.lstChuShouStats.Items.Add("=== 第1-8期出手分布 ===");
                         for (int step = 1; step <= 8; step++)
                         {
-                            var stepRecords = chuShouRecords.Where(d => d.CycleStep == step).ToList();
+                            // 遍历每个周期中的每个出手来统计步骤分布
+                            var stepRecords = new List<LotteryData>();
+                            var count = 0;
+                            foreach(var cycleGroup in cycles)
+                            {
+                                //var cycleSteps = cycleGroup.Where(d => d.CycleStep == step).ToList();
+                                //stepRecords.AddRange(cycleSteps);
+                                if(step == cycleGroup.Count())
+                                {
+                                    count++;
+                                }
+
+                            }
+                            
                             int successCount = stepRecords.Count(d => d.IsChuShouSuccess);
-                            this.lstChuShouStats.Items.Add($"第{step}期出手: {stepRecords.Count}次, 成功{successCount}次, 失败{stepRecords.Count - successCount}次");
+                            this.lstChuShouStats.Items.Add($"第{step}期中: {count}次。");
                         }
                         
                         // 统计出手周期完成情况：从第1期到第8期中奖的各种情况
