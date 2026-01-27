@@ -1,0 +1,20 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/bin/Debug/net6.0-windows/CalcFen.dll
+/bin/Debug/net6.0-windows/CalcFen.exe
+/bin/Debug/net6.0-windows/CalcFen.pdb
+/obj/Debug/net6.0-windows/ref/CalcFen.dll
+/obj/Debug/net6.0-windows/refint/CalcFen.dll
+/.vs/CalcFen/FileContentIndex/a6993dad-ba17-4acf-9c3a-6999bd3b8a4d.vsidx
+/.vs/CalcFen/FileContentIndex/b671abe9-d0a6-452e-a209-66dcf198d4f0.vsidx
+/.vs/CalcFen/FileContentIndex/c2a5a5e4-e82e-49ab-aad1-eeec41da3823.vsidx
+/obj/Debug/net6.0-windows/apphost.exe
+/obj/Debug/net6.0-windows/CalcFen.AssemblyInfo.cs
+/obj/Debug/net6.0-windows/CalcFen.AssemblyInfoInputs.cache
+/obj/Debug/net6.0-windows/CalcFen.csproj.FileListAbsolute.txt
+/obj/Debug/net6.0-windows/CalcFen.csproj.GenerateResource.cache
+/obj/Debug/net6.0-windows/CalcFen.dll
+/obj/Debug/net6.0-windows/CalcFen.pdb
+/obj/Debug/net6.0-windows/CalcFen.sourcelink.json
