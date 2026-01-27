@@ -2,11 +2,6 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/bin/Debug/net6.0-windows/CalcFen.dll
-/bin/Debug/net6.0-windows/CalcFen.exe
-/bin/Debug/net6.0-windows/CalcFen.pdb
-/obj/Debug/net6.0-windows/ref/CalcFen.dll
-/obj/Debug/net6.0-windows/refint/CalcFen.dll
 /.vs/CalcFen/FileContentIndex/a6993dad-ba17-4acf-9c3a-6999bd3b8a4d.vsidx
 /.vs/CalcFen/FileContentIndex/b671abe9-d0a6-452e-a209-66dcf198d4f0.vsidx
 /.vs/CalcFen/FileContentIndex/c2a5a5e4-e82e-49ab-aad1-eeec41da3823.vsidx
@@ -15,6 +10,11 @@
 /obj/Debug/net6.0-windows/CalcFen.AssemblyInfoInputs.cache
 /obj/Debug/net6.0-windows/CalcFen.csproj.FileListAbsolute.txt
 /obj/Debug/net6.0-windows/CalcFen.csproj.GenerateResource.cache
-/obj/Debug/net6.0-windows/CalcFen.dll
-/obj/Debug/net6.0-windows/CalcFen.pdb
 /obj/Debug/net6.0-windows/CalcFen.sourcelink.json
+/.vs/CalcFen/DesignTimeBuild/.dtbcache.v2
+/.vs/CalcFen/FileContentIndex/0d140ebf-30d9-4cb9-a8c2-aaf9eadebfc7.vsidx
+/.vs/CalcFen/FileContentIndex/0e161f14-6ff8-4d2a-840e-61d7cfeed55b.vsidx
+/.vs/CalcFen/FileContentIndex/251f4206-bedb-4df6-8cae-7f2964b2f150.vsidx
+/.vs/CalcFen/FileContentIndex/8c6b85ee-08ee-43bf-8ebb-a3a819701d28.vsidx
+/.vs/CalcFen/FileContentIndex/ce5f66e0-b44b-4b09-b52f-fbdbb6922dd6.vsidx
+/.vs/CalcFen/FileContentIndex/af4aba92-1479-4afa-8cca-516e5b34bbaa.vsidx
