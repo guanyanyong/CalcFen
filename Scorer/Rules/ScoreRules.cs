@@ -341,6 +341,7 @@ namespace CpCodeSelect.Scorer.Rules
 
                     // 检查是否接近或超过上轨
                     if (Math.Abs(data.KValue - data.BollingerBands.BollUpperValue) <= 0.3)
+                    //if (data.BollingerBands.BollUpperValue - data.KValue <= 1.857)
                     {
                         touchedUpper = true;
                         break;
@@ -354,12 +355,12 @@ namespace CpCodeSelect.Scorer.Rules
     }
 
     /// <summary>
-    /// K值接近上轨评分规则 - 当K值距离上轨0.3以内时减300分
+    /// K值接近上轨评分规则 - 当K值距离上轨1.857以内时减300分
     /// </summary>
     public class KValueNearUpperRailRule : BaseScoreRule
     {
         public override string RuleName => "K值接近上轨";
-        public override string Description => "K值离上轨的值还有0.3以内的距离时，减300分";
+        public override string Description => "K值离上轨的值还有1.857以内的距离时，减300分";
         public override int ScoreValue => -300;
 
         public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
@@ -367,9 +368,10 @@ namespace CpCodeSelect.Scorer.Rules
             if (currentData.BollingerBands == null)
                 return false;
 
-            // 检查K值是否距离上轨在0.3以内
+            // 检查K值是否距离上轨在1.857以内
             double distanceToUpper = currentData.BollingerBands.BollUpperValue - currentData.KValue;
-            return distanceToUpper >= 0 && distanceToUpper <= 0.3;
+            //return distanceToUpper >= 0 && distanceToUpper <= 1.857;
+            return distanceToUpper <= 1.857;
         }
     }
 

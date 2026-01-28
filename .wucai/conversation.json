@@ -66,307 +66,157 @@
   },
   {
     "role": "user",
-    "content": "周期统计中 除了第一个周期能够正常显示步骤为步骤1-步骤8,其余的一直都是步骤1 帮我检查下问题并修复",
-    "timestamp": "2026-01-27T12:14:07.326Z"
+    "content": "帮我检查下现在一共有多少评分项 按照加分项和减分项分类统计列一下",
+    "timestamp": "2026-01-28T04:14:24.060Z"
   },
   {
     "role": "assistant",
-    "content": "我来帮你检查周期统计中步骤显示的问题。首先让我查看相关的代码文件，找出问题所在。\n\n",
-    "timestamp": "2026-01-27T12:14:10.249Z"
+    "content": "我需要先查看代码文件来了解评分项的定义。让我检查相关的代码文件。\n\n",
+    "timestamp": "2026-01-28T04:14:25.945Z"
   },
   {
     "role": "tool",
-    "content": "SearchText('周期统计|步骤')",
-    "timestamp": "2026-01-27T12:14:10.589Z"
+    "content": "Read(BaseCodeInfo.cs)",
+    "timestamp": "2026-01-28T04:14:25.973Z"
+  },
+  {
+    "role": "assistant",
+    "content": "这个文件似乎没有包含评分项。让我检查其他相关文件。\n\n",
+    "timestamp": "2026-01-28T04:14:27.829Z"
+  },
+  {
+    "role": "tool",
+    "content": "SearchText('评分|加分|减分|Score|Fen' within ./)",
+    "timestamp": "2026-01-28T04:14:28.142Z"
   },
   {
     "role": "tool_result",
-    "content": "⎿ 找到1个匹配项",
-    "timestamp": "2026-01-27T12:14:10.593Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我发现了问题所在。让我查看与周期统计相关的主要代码文件，特别是 MainForm.cs 和 LotteryProcessor.cs 中关于周期步骤计算的部分。\n\n",
-    "timestamp": "2026-01-27T12:14:12.832Z"
+    "content": "⎿ 找到20个匹配项 (从147+个截断)",
+    "timestamp": "2026-01-28T04:14:28.144Z"
   },
   {
     "role": "tool",
-    "content": "Read(MainForm.cs)",
-    "timestamp": "2026-01-27T12:14:12.857Z"
+    "content": "ReadFolder(.)",
+    "timestamp": "2026-01-28T04:14:31.053Z"
+  },
+  {
+    "role": "tool_result",
+    "content": "⎿ 找到了26项 (1 git-ignored)",
+    "timestamp": "2026-01-28T04:14:31.054Z"
   },
   {
     "role": "assistant",
-    "content": "现在我需要查看LotteryProcessor.cs文件，因为周期和步骤的计算逻辑在其中：\n\n",
-    "timestamp": "2026-01-27T12:14:16.974Z"
+    "content": "我看到搜索结果中提到了一些可能是评分相关的文件，特别是 `.vs/CalcFen/v17/DocumentLayout.json` 中提到的 `scorer/rules/scorerules.cs` 和 `core/lotteryprocessor.cs` 文件。让我检查这些文件。\n\n首先，我要查看项目结构，看看是否有这些目录：\n\n",
+    "timestamp": "2026-01-28T04:14:31.055Z"
+  },
+  {
+    "role": "tool",
+    "content": "ReadFolder(Scorer)",
+    "timestamp": "2026-01-28T04:14:32.826Z"
+  },
+  {
+    "role": "tool_result",
+    "content": "⎿ 找到了2项",
+    "timestamp": "2026-01-28T04:14:32.827Z"
+  },
+  {
+    "role": "assistant",
+    "content": "太好了！我看到了 `Scorer` 目录，里面应该有评分相关的文件。让我查看这个目录：\n\n",
+    "timestamp": "2026-01-28T04:14:32.829Z"
+  },
+  {
+    "role": "tool",
+    "content": "ReadFolder(Scorer\\Rules)",
+    "timestamp": "2026-01-28T04:14:34.288Z"
+  },
+  {
+    "role": "tool_result",
+    "content": "⎿ 找到了1项",
+    "timestamp": "2026-01-28T04:14:34.290Z"
+  },
+  {
+    "role": "assistant",
+    "content": "我看到在 Scorer 目录下有 BaseScoreRule.cs 和一个 Rules 子目录。根据之前搜索的结果，还有一个 scorerules.cs 文件。让我查看这两个目录：\n\n",
+    "timestamp": "2026-01-28T04:14:34.291Z"
+  },
+  {
+    "role": "assistant",
+    "content": "现在让我查看评分相关的核心文件：\n\n",
+    "timestamp": "2026-01-28T04:14:35.566Z"
+  },
+  {
+    "role": "tool",
+    "content": "Read(Scorer\\BaseScoreRule.cs)",
+    "timestamp": "2026-01-28T04:14:35.587Z"
+  },
+  {
+    "role": "tool",
+    "content": "Read(Scorer\\Rules\\ScoreRules.cs)",
+    "timestamp": "2026-01-28T04:14:36.778Z"
+  },
+  {
+    "role": "tool",
+    "content": "ReadFolder(Models)",
+    "timestamp": "2026-01-28T04:14:40.279Z"
+  },
+  {
+    "role": "tool_result",
+    "content": "⎿ 找到了1项",
+    "timestamp": "2026-01-28T04:14:40.282Z"
+  },
+  {
+    "role": "assistant",
+    "content": "让我检查Models目录，看看是否还有其他评分相关的文件：\n\n",
+    "timestamp": "2026-01-28T04:14:40.282Z"
+  },
+  {
+    "role": "tool",
+    "content": "Read(Models\\LotteryData.cs)",
+    "timestamp": "2026-01-28T04:14:42.084Z"
+  },
+  {
+    "role": "tool",
+    "content": "ReadFolder(Core)",
+    "timestamp": "2026-01-28T04:14:43.856Z"
+  },
+  {
+    "role": "tool_result",
+    "content": "⎿ 找到了1项",
+    "timestamp": "2026-01-28T04:14:43.858Z"
+  },
+  {
+    "role": "assistant",
+    "content": "让我检查Core目录，可能还有评分相关的实现：\n\n",
+    "timestamp": "2026-01-28T04:14:43.859Z"
   },
   {
     "role": "tool",
     "content": "Read(Core\\LotteryProcessor.cs)",
-    "timestamp": "2026-01-27T12:14:17.012Z"
+    "timestamp": "2026-01-28T04:14:47.833Z"
   },
   {
     "role": "assistant",
-    "content": "现在我已经找到了问题所在。在 `CalculateChuShouCycleAndHandNumber` 方法中，周期和步骤的计算逻辑存在问题。当前逻辑会导致除了第一个周期外，其他周期始终只能显示步骤1。让我分析一下问题并修复它。\n\n问题出现在 `LotteryProcessor.cs` 的 `CalculateChuShouCycleAndHandNumber` 方法中。当前逻辑在找到最近完成的周期后，总是将新周期的第一步设为当前出手，这导致了问题。\n\n",
-    "timestamp": "2026-01-27T12:14:42.144Z"
+    "content": "现在，让我检查是否有其他可能包含评分项的文件。根据代码分析，我已经找到了所有的评分规则。让我统计一下：\n\n",
+    "timestamp": "2026-01-28T04:14:51.029Z"
   },
   {
     "role": "tool",
-    "content": "Edit(Core\\LotteryProcessor.cs)",
-    "timestamp": "2026-01-27T12:14:52.312Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 93 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:14:52.314Z"
+    "content": "Todo Write(Create todos)",
+    "timestamp": "2026-01-28T04:14:51.056Z"
   },
   {
     "role": "assistant",
-    "content": "我注意到虽然我修改了 `CalculateChuShouCycleAndHandNumber` 方法，但这个方法的逻辑仍可能存在一些问题。让我们更仔细地重新分析这个问题，并进行彻底修复。我需要重写这个方法，确保它能正确地计算周期和步骤。\n\n",
-    "timestamp": "2026-01-27T12:15:16.738Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 76 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:15:16.856Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我发现问题可能不仅仅在 `CalculateChuShouCycleAndHandNumber` 方法中，还需要考虑周期完成和爆掉状态的更新逻辑。让我检查一下 MainForm.cs 中的周期统计部分：\n\n",
-    "timestamp": "2026-01-27T12:15:19.532Z"
+    "content": "根据我对代码的分析，我已经找到了所有评分规则。现在让我完成任务并报告统计结果：\n\n",
+    "timestamp": "2026-01-28T04:14:54.260Z"
   },
   {
     "role": "tool",
-    "content": "SearchText('CalculateChuShouStatistics')",
-    "timestamp": "2026-01-27T12:15:19.840Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 找到1个匹配项",
-    "timestamp": "2026-01-27T12:15:19.842Z"
+    "content": "Todo Write(Update todos)",
+    "timestamp": "2026-01-28T04:14:54.291Z"
   },
   {
     "role": "assistant",
-    "content": "让我检查 MainForm.cs 中的 CalculateChuShouStatistics 方法，看看是否还有其他问题：\n\n",
-    "timestamp": "2026-01-27T12:15:23.120Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 791-940 of 949 from MainForm.cs",
-    "timestamp": "2026-01-27T12:15:23.149Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我注意到 `CalculateChuShouStatistics` 方法中的一个统计部分可能有问题。让我继续阅读该方法的剩余部分，然后修复问题：\n\n",
-    "timestamp": "2026-01-27T12:15:25.837Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 941-949 of 949 from MainForm.cs",
-    "timestamp": "2026-01-27T12:15:25.866Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我发现了另一个问题，在统计部分有一段逻辑似乎不太正确。让我修复 MainForm.cs 中的 CalculateChuShouStatistics 方法中关于步骤统计的错误部分：\n\n",
-    "timestamp": "2026-01-27T12:15:33.577Z"
-  },
-  {
-    "role": "tool",
-    "content": "Edit(MainForm.cs)",
-    "timestamp": "2026-01-27T12:15:33.631Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 23 行到 MainForm.cs\n          ...",
-    "timestamp": "2026-01-27T12:15:33.635Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我需要检查 MainForm.cs 中的 RecalculateAllScoresAsync 方法，因为这个方法中也涉及到周期和步骤的计算。我需要确保在重新计算时，周期和步骤信息被正确计算：\n\n",
-    "timestamp": "2026-01-27T12:15:36.356Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 651-750 of 943 from MainForm.cs",
-    "timestamp": "2026-01-27T12:15:36.396Z"
-  },
-  {
-    "role": "assistant",
-    "content": "让我继续读取 RecalculateAllScoresAsync 方法的剩余部分：\n\n",
-    "timestamp": "2026-01-27T12:15:41.158Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 751-800 of 943 from MainForm.cs",
-    "timestamp": "2026-01-27T12:15:41.190Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我发现了问题的根本原因。在 MainForm.cs 的 RecalculateAllScoresAsync 方法中，周期完成和爆掉状态的标记逻辑中有一些错误，特别是 `CycleStep` 依赖于尚未计算的周期信息。让我修复这部分逻辑：\n\n",
-    "timestamp": "2026-01-27T12:16:10.607Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 118 行到 MainForm.cs\n          ...",
-    "timestamp": "2026-01-27T12:16:10.771Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我还需要修改 LotteryProcessor.cs 中的 CalculateChuShouCycleAndHandNumber 方法，使其更加准确。我想进一步完善这个方法，因为之前的版本可能仍有逻辑问题：\n\n",
-    "timestamp": "2026-01-27T12:16:40.151Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 110 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:16:40.325Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我意识到周期计算逻辑变得更加复杂了。让我重新设计一个更简单、更清晰的周期计算方法。实际上，从你最初描述的问题来看，我需要重新审视如何定义和计算周期。\n\n在LotteryProcessor类中，当我们在CalculateOtherIndicators方法中调用CalculateChuShouCycleAndHandNumber时，应该使用一种更简单的方式来确定当前出手的周期和步骤。让我们还修改LotteryProcessor.cs中的CalculateOtherIndicators方法，以确保在每次处理新数据时都会正确更新周期完成状态：\n\n",
-    "timestamp": "2026-01-27T12:16:45.908Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 421-470 of 776 from Core/LotteryProcessor.cs",
-    "timestamp": "2026-01-27T12:16:45.941Z"
-  },
-  {
-    "role": "assistant",
-    "content": "让我读取CalculateOtherIndicators方法的那部分：\n\n",
-    "timestamp": "2026-01-27T12:16:48.751Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 351-410 of 776 from Core/LotteryProcessor.cs",
-    "timestamp": "2026-01-27T12:16:48.788Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我需要看清楚完整的方法，特别是涉及周期更新的逻辑。让我重写CalculateChuShouCycleAndHandNumber方法，使用一个更清晰的逻辑：\n\n",
-    "timestamp": "2026-01-27T12:17:13.886Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 103 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:17:14.135Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在，让我创建一个更完整的解决方案。我觉得周期计算逻辑需要从根本上重新设计。我需要创建一个更简明扼要的周期计算方法，考虑到以下因素：周期在中奖时完成，在连续8次出手未中奖时爆掉，每个周期最多包含8个步骤。\n\n让我重新定义整个周期计算逻辑：\n\n",
-    "timestamp": "2026-01-27T12:17:42.837Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 157 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:17:43.083Z"
-  },
-  {
-    "role": "assistant",
-    "content": "完成了所有必要的修改！我已经修复了周期统计中除第一个周期外其他周期步骤一直显示为步骤1的问题。主要修改如下：\n\n### 问题分析与解决\n\n1. **核心问题**：`CalculateChuShouCycleAndHandNumber` 方法的逻辑不正确，没有正确追踪每个周期中的步骤序列\n\n2. **主要修改**：\n   - 重写了 `CalculateChuShouCycleAndHandNumber` 方法，采用从头开始按顺序重新计算所有出手的周期和步骤的策略\n   - 修改了 MainForm.cs 中的 `CalculateChuShouStatistics` 方法，修复了统计部分的逻辑\n   - 优化了 `RecalculateAllScoresAsync` 方法中的周期完成和爆掉状态标记逻辑\n\n3. **关键改进**：\n   - 正确计算每个周期中的步骤序列（1-8步）\n   - 准确识别周期完成（中奖）和爆掉（8步未中奖）的条件\n   - 确保所有周期都能正确显示从步骤1到步骤8的过程\n\n现在所有周期都应该能够正确显示从步骤1到步骤8的完整序列，而不仅仅是第一个周期。",
-    "timestamp": "2026-01-27T12:17:49.193Z"
-  },
-  {
-    "role": "user",
-    "content": "现在的周期逻辑存在问题了 我需要出现中或者达到8期才能完成一个周期 目前不是这样实现的",
-    "timestamp": "2026-01-27T12:20:05.355Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我理解了您的问题。目前的逻辑可能没有严格按照\"中奖或达到8期\"来完成一个周期。让我修复这个问题，确保周期只有在中奖或达到8期未中奖时才完成。\n\n",
-    "timestamp": "2026-01-27T12:20:39.740Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 186 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:20:39.946Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要进一步简化并修复周期计算逻辑，使其更符合您描述的规则：一个周期从步骤1开始，当出现中奖或达到第8步时完成周期。让我重写这个方法：\n\n",
-    "timestamp": "2026-01-27T12:21:10.672Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 147 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:21:10.860Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要进一步简化并正确实现周期计算算法。上面的实现仍然有些复杂，让我用一个更清晰的算法来实现：\n\n",
-    "timestamp": "2026-01-27T12:21:42.617Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我需要重新设计一个更简单直接的算法来处理周期计算。之前的实现太复杂了，让我们使用一个清晰的算法：\n\n",
-    "timestamp": "2026-01-27T12:22:08.466Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 158 行到 LotteryProcessor.cs\n          ...",
-    "timestamp": "2026-01-27T12:22:08.660Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我需要检查并修正 MainForm.cs 中的 RecalculateAllScoresAsync 方法，因为它也可能影响周期计算：\n\n",
-    "timestamp": "2026-01-27T12:22:34.895Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 76 行到 MainForm.cs\n          ...",
-    "timestamp": "2026-01-27T12:22:35.028Z"
-  },
-  {
-    "role": "assistant",
-    "content": "完成了所有修复！我已更新了周期计算逻辑，使其严格按照\"中奖或达到8期\"来完成一个周期的规则。主要改进包括：\n\n### 修复的核心问题\n1. **周期完成规则**：一个周期从步骤1开始，当出现中奖或达到第8步时，当前周期完成，下一出手开始新周期\n2. **步骤计数逻辑**：确保每个周期内的出手正确计数为步骤1-8\n3. **周期状态标记**：正确标记周期完成（中奖）和周期爆掉（第8步未中奖）\n\n### 主要修改内容\n1. 重写了 `CalculateChuShouCycleAndHandNumber` 方法，确保按正确顺序计算每个出手的周期和步骤\n2. 修正了 `RecalculateAllScoresAsync` 方法中的周期状态标记逻辑\n3. 确保周期状态（完成/爆掉）正确传播到同一周期内的所有出手\n\n现在所有周期都应该正确显示从步骤1到步骤8的完整序列，并且只有在中奖或达到第8步时才会完成当前周期并开始新周期。",
-    "timestamp": "2026-01-27T12:22:47.935Z"
-  },
-  {
-    "role": "user",
-    "content": "帮我把显示在页面的350注号码 从小到大排序 并且用空格分隔",
-    "timestamp": "2026-01-27T12:39:49.202Z"
-  },
-  {
-    "role": "user",
-    "content": "帮我把显示在界面上的350注号码 从小到大排序 并且用空格分隔",
-    "timestamp": "2026-01-27T12:40:10.574Z"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要修改显示350注号码的方法，使它们按从小到大排序并用空格分隔。让我找到相关代码并进行修改：\n\n",
-    "timestamp": "2026-01-27T12:40:21.337Z"
-  },
-  {
-    "role": "tool",
-    "content": "SearchText('Display350Numbers')",
-    "timestamp": "2026-01-27T12:40:21.665Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 找到1个匹配项",
-    "timestamp": "2026-01-27T12:40:21.667Z"
-  },
-  {
-    "role": "assistant",
-    "content": "找到了Display350Numbers方法，让我查看并修改它：\n\n",
-    "timestamp": "2026-01-27T12:40:24.885Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ Read lines 534-543 of 930 from MainForm.cs",
-    "timestamp": "2026-01-27T12:40:24.921Z"
-  },
-  {
-    "role": "assistant",
-    "content": "现在我找到了Display350Numbers方法，让我修改它，使号码按从小到大排序并用空格分隔：\n\n",
-    "timestamp": "2026-01-27T12:40:29.736Z"
-  },
-  {
-    "role": "tool_result",
-    "content": "⎿ 已写入 14 行到 MainForm.cs\n          ...",
-    "timestamp": "2026-01-27T12:40:29.793Z"
-  },
-  {
-    "role": "assistant",
-    "content": "完成了！我已经修改了 `Display350Numbers` 方法，现在350注号码将会：\n\n1. 按从小到大的顺序排序\n2. 用空格而不是逗号分隔\n\n修改后的代码会将号码转换为整数进行排序，然后再转回3位数字格式（如 \"001\", \"010\", \"123\" 等），确保格式一致。",
-    "timestamp": "2026-01-27T12:40:32.927Z"
+    "content": "# 彩票评分项统计报告\n\n根据对代码的分析，我发现了一共 **12 个评分项**，按照加分项和减分项分类如下：\n\n## 加分项（5个）\n\n1. **确认点后趋势段未形成** (+70分)\n   - 描述：确认点后趋势段未形成时，评分加70分，可连续出手2次\n\n2. **大遗漏间0遗漏强或1遗漏强** (+40分)\n   - 描述：两个大遗漏间0遗漏强或1遗漏强，评分加40分\n\n3. **三轨同向** (+80分)\n   - 描述：布林上轨、中轨、下轨都是上升的加80分\n\n4. **两轨同向** (+70分)\n   - 描述：布林上轨和中轨2轨上升的加70分\n\n5. **K值突破中轨未触碰上轨** (+40分)\n   - 描述：K值从中轨下突破中轨后，没有触碰过上轨，如果是遗漏2则评分加40，可连续出手2次\n\n## 减分项（7个）\n\n1. **K值在布林中轨以下不可投注** (-1000分)\n   - 描述：K值在布林中轨以下时，评分为-1000分，不可投注\n\n2. **趋势段形成后不可投注** (-500分)\n   - 描述：趋势段形成后，评分为-500分，不可投注\n\n3. **轨道反向** (-50分)\n   - 描述：布林上轨下降，中轨和下轨上升的，如果是遗漏0则减少50分\n\n4. **K值接近上轨** (-300分)\n   - 描述：K值离上轨的值还有1.857以内的距离时，减300分\n\n5. **遗漏值评分** (递减分数)\n   - 描述：根据遗漏值减分 - 遗漏2减30分，遗漏3减50分，遗漏≥4减100分\n\n6. **布林上轨下降** (-50分)\n   - 描述：布林上轨在最近5期内有下降时，减50分\n\n7. **连续出手限制** (-1000分)\n   - 描述：连续出手2期后，第3期必须停一期（评分-1000分阻止出手）\n\n8. **连续第二手限制** (-500分)\n   - 描述：如果连续出手第二期，但不在确认点后区域或已形成趋势段，减500分\n\n## 统计汇总\n\n- **总计评分项**: 12个\n- **加分项**: 5个 (其中最高分值+80分)\n- **减分项**: 7个 (其中最低分值-1000分)\n\n注意: 其中有一项\"遗漏值评分\"根据实际情况会有不同的减分值(-30、-50或-100分)，但被统计为一条评分规则。",
+    "timestamp": "2026-01-28T04:15:03.751Z"
   }
 ]
