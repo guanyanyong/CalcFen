@@ -57,8 +57,8 @@ namespace CalcFen
             scoringEngine.AddRule(new TrendSegmentNoBetRule());
             scoringEngine.AddRule(new ConfirmPointBeforeTrendRule());
             scoringEngine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
-            scoringEngine.AddRule(new ThreeTrackSameDirectionRule());
-            scoringEngine.AddRule(new TwoTrackSameDirectionRule());
+            //scoringEngine.AddRule(new ThreeTrackSameDirectionRule());
+            //scoringEngine.AddRule(new TwoTrackSameDirectionRule());
             scoringEngine.AddRule(new TrackOppositeDirectionRule());
             scoringEngine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
             scoringEngine.AddRule(new KValueNearUpperRailRule()); // 添加K值接近上轨的评分规则
@@ -75,8 +75,8 @@ namespace CalcFen
             engine.AddRule(new TrendSegmentNoBetRule());
             engine.AddRule(new ConfirmPointBeforeTrendRule());
             engine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
-            engine.AddRule(new ThreeTrackSameDirectionRule());
-            engine.AddRule(new TwoTrackSameDirectionRule());
+            //engine.AddRule(new ThreeTrackSameDirectionRule());
+            //engine.AddRule(new TwoTrackSameDirectionRule());
             engine.AddRule(new TrackOppositeDirectionRule());
             engine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
             engine.AddRule(new KValueNearUpperRailRule()); // 添加K值接近上轨的评分规则
@@ -519,7 +519,15 @@ namespace CalcFen
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            processor.Reset();
+            Reset(true);
+        }
+        /// <summary>
+        /// 重新设置应用程序状态
+        /// </summary>
+        /// <param name="needReset350code">是否需要重新生成350注号码</param>
+        private void Reset(bool needReset350code)
+        {
+            processor.Reset(needReset350code);
             processedData.Clear();
             lstQiHao.Items.Clear();
             lstScores.Items.Clear();
@@ -573,7 +581,8 @@ namespace CalcFen
                 {
                     processor.SetManual350Numbers(numbers);
                     MessageBox.Show($"成功设置{numbers.Count}个号码", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Display350Numbers();
+                    //Display350Numbers();
+                    Reset(false);
                 }
                 else
                 {

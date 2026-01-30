@@ -611,8 +611,8 @@ namespace CpCodeSelect.Core
                 return;
             }
 
-            // 简化的趋势段逻辑：只按大遗漏后形成趋势段的逻辑
-            // 大遗漏过后理论周期内开出第4个中奖（或者到达第5个期如4中1挂）的当期开始是趋势段
+            // 修正的趋势段逻辑：只按大遗漏后理论上中出4个才是趋势段的逻辑
+            // 大遗漏过后理论周期内开出第4个中奖的当期及之后开始是趋势段
             int latestBigGapIndex = -1;
             for (int i = HistoryData.Count - 1; i >= 0; i--)
             {
@@ -650,24 +650,8 @@ namespace CpCodeSelect.Core
                 // 判断当前期是否在大遗漏后的理论周期内（遗漏值≤1）
                 bool isWithinTheoryPeriod = currentData.YiLouValue <= 1;
                 
-                // 计算大遗漏后理论周期内的总期数（包括中奖和未中奖）
-                int totalTheoryPeriodCount = 0;
-                for (int i = latestBigGapIndex + 1; i < HistoryData.Count; i++)
-                {
-                    if (HistoryData[i].YiLouValue <= 1) // 在理论周期内
-                    {
-                        totalTheoryPeriodCount++;
-                    }
-                }
-                if (isWithinTheoryPeriod) // 当前期也在理论周期内
-                {
-                    totalTheoryPeriodCount++;
-                }
-                
-                // 趋势段条件：当前期在大遗漏后的理论周期内，且满足以下条件之一：
-                // 1. 理论周期内已经有4个中奖
-                // 2. 理论周期内已经有5个期（如4中1挂）
-                bool shouldEnterTrendSegment = isWithinTheoryPeriod && (winsAfterBigGap >= 4 || totalTheoryPeriodCount >= 5);
+                // 趋势段条件：当前期在大遗漏后的理论周期内，且理论周期内已经有4个中奖
+                bool shouldEnterTrendSegment = isWithinTheoryPeriod && winsAfterBigGap >= 4;
 
                 if (shouldEnterTrendSegment)
                 {
@@ -740,11 +724,14 @@ namespace CpCodeSelect.Core
         /// <summary>
         /// 重新初始化处理器
         /// </summary>
-        public void Reset()
+        public void Reset(bool needReset350Code)
         {
             HistoryData.Clear();
             LastExecutedQiHao = string.Empty;
-            GenerateRandom350Numbers();
+            if (needReset350Code)
+            {
+                GenerateRandom350Numbers();
+            }
         }
     }
 }

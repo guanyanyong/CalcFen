@@ -191,7 +191,7 @@ namespace CalcFen
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1244, 822);
+            ClientSize = new Size(808, 822);
             Controls.Add(btnGenerate350Numbers);
             Controls.Add(btnSet350Numbers);
             Controls.Add(lbl350Numbers);
