@@ -869,9 +869,9 @@ namespace CalcFen
                         this.lstChuShouStats.Items.Add("");
                         this.lstChuShouStats.Items.Add("=== 出手周期完成统计 (1-8期中奖或8期全不中) ===");
                         
-                        // 初始化统计数组，索引0-8分别代表在第1-8期中奖和8期都不中奖
-                        int[] completionStats = new int[9];
-                        for (int i = 0; i < 9; i++)
+                        // 初始化统计数组，索引0-N分别代表在第1-N期中奖和N期都不中奖
+                        int[] completionStats = new int[cycleLength + 1];
+                        for (int i = 0; i < cycleLength + 1; i++)
                         {
                             completionStats[i] = 0;
                         }
