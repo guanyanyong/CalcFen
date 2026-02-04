@@ -1,5 +1,0 @@
-D:\code\cp\AiGenerate\CalcFen\Tests\obj\Debug\net6.0-windows\TestApp.GeneratedMSBuildEditorConfig.editorconfig
-D:\code\cp\AiGenerate\CalcFen\Tests\obj\Debug\net6.0-windows\TestApp.AssemblyInfoInputs.cache
-D:\code\cp\AiGenerate\CalcFen\Tests\obj\Debug\net6.0-windows\TestApp.AssemblyInfo.cs
-D:\code\cp\AiGenerate\CalcFen\Tests\obj\Debug\net6.0-windows\TestApp.csproj.CoreCompileInputs.cache
-D:\code\cp\AiGenerate\CalcFen\Tests\obj\Debug\net6.0-windows\TestApp.sourcelink.json
