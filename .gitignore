@@ -20,3 +20,16 @@
 /.vs/CalcFen/FileContentIndex/af4aba92-1479-4afa-8cca-516e5b34bbaa.vsidx
 /.vs/CalcFen/FileContentIndex/d6fce59b-24ea-4c3f-b980-4b14860ee137.vsidx
 *.vsidx
+/bin/Debug/net6.0-windows/CalcFen.dll
+/bin/Debug/net6.0-windows/CalcFen.exe
+/bin/Debug/net6.0-windows/CalcFen.pdb
+/obj/Debug/net6.0-windows/ref/CalcFen.dll
+/.vs/CalcFen/v17/.futdcache.v2
+/.vs/CalcFen/v17/.suo
+/.vs/CalcFen/v17/DocumentLayout.json
+/obj/Debug/net6.0-windows/refint/CalcFen.dll
+/obj/Debug/net6.0-windows/apphost.exe
+/obj/Debug/net6.0-windows/CalcFen.dll
+/obj/Debug/net6.0-windows/CalcFen.AssemblyInfo.cs
+/obj/Debug/net6.0-windows/CalcFen.AssemblyInfoInputs.cache
+/obj/Debug/net6.0-windows/CalcFen.pdb
