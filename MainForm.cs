@@ -12,6 +12,7 @@ using CpCodeSelect.Core;
 using CpCodeSelect.Model;
 using CpCodeSelect.Scorer;
 using CpCodeSelect.Scorer.Rules;
+using CpCodeSelect.Config;
 
 namespace CalcFen
 {
@@ -442,7 +443,7 @@ namespace CalcFen
                 if (selectedData.IsChuShou)
                 {
                     lstScores.Items.Add($"所属周期: {selectedData.CycleNumber}");
-                    lstScores.Items.Add($"周期步骤: {selectedData.CycleStep}/8");
+                    lstScores.Items.Add($"周期步骤: {selectedData.CycleStep}/{processor.GetCycleLength()}");
                     lstScores.Items.Add($"周期是否完成: {(selectedData.IsCycleComplete ? "是" : "否")}");
                     lstScores.Items.Add($"周期是否爆掉: {(selectedData.IsCycleBurst ? "是" : "否")}");
                     
@@ -768,8 +769,8 @@ namespace CalcFen
                                 }
                             }
                         }
-                        // 检查周期是否因第8步未中奖而爆掉
-                        else if (processor.HistoryData[i - 1].CycleStep == 8 && 
+                        // 检查周期是否因第N步未中奖而爆掉
+                        else if (processor.HistoryData[i - 1].CycleStep == processor.GetCycleLength() && 
                                 i < processor.HistoryData.Count && 
                                 !processor.HistoryData[i].IsZhongJiang)
                         {
@@ -837,6 +838,9 @@ namespace CalcFen
                     
                     if (cycles.Count > 0)
                     {
+                        // 获取周期长度，用于整个统计过程
+                        int cycleLength = processor.GetCycleLength();
+                        
                         // 统计完成的周期数和爆掉的周期数
                         int completedCycles = cycles.Count(c => c.Any(d => d.IsCycleComplete));
                         int burstCycles = cycles.Count(c => c.Any(d => d.IsCycleBurst));
@@ -845,13 +849,13 @@ namespace CalcFen
                         this.lstChuShouStats.Items.Add($"=== 周期统计数据 ===");
                         this.lstChuShouStats.Items.Add($"总周期数: {totalCycles}");
                         this.lstChuShouStats.Items.Add($"完成周期数(中奖完成): {completedCycles}");
-                        this.lstChuShouStats.Items.Add($"爆掉周期数(8期不中奖): {burstCycles}");
+                        this.lstChuShouStats.Items.Add($"爆掉周期数({cycleLength}期不中奖): {burstCycles}");
                         this.lstChuShouStats.Items.Add($"周期成功率: {(totalCycles > 0 ? (double)(totalCycles - burstCycles) / totalCycles * 100 : 0):F2}%");
 
-                        // 重新基于周期分组进行统计第1-8期的出手分布
+                        // 重新基于周期分组进行统计第1-N期的出手分布
                         this.lstChuShouStats.Items.Add("");
-                        this.lstChuShouStats.Items.Add("=== 第1-8期出手分布 ===");
-                        for (int step = 1; step <= 8; step++)
+                        this.lstChuShouStats.Items.Add($"=== 第1-{cycleLength}期出手分布 ===");
+                        for (int step = 1; step <= cycleLength; step++)
                         {
                             // 遍历每个周期中的每个出手来统计步骤分布
                             var stepRecords = new List<LotteryData>();
@@ -865,9 +869,9 @@ namespace CalcFen
                             this.lstChuShouStats.Items.Add($"第{step}期中: {stepRecords.Count}次。(中奖{successCount}次)");
                         }
                         
-                        // 统计出手周期完成情况：从第1期到第8期中奖的各种情况
+                        // 统计出手周期完成情况：从第1期到第N期中奖的各种情况
                         this.lstChuShouStats.Items.Add("");
-                        this.lstChuShouStats.Items.Add("=== 出手周期完成统计 (1-8期中奖或8期全不中) ===");
+                        this.lstChuShouStats.Items.Add($"=== 出手周期完成统计 (1-{cycleLength}期中奖或{cycleLength}期全不中) ===");
                         
                         // 初始化统计数组，索引0-N分别代表在第1-N期中奖和N期都不中奖
                         int[] completionStats = new int[cycleLength + 1];
@@ -892,7 +896,7 @@ namespace CalcFen
                                 if (winningRecord != null)
                                 {
                                     int winStep = winningRecord.CycleStep;
-                                    if (winStep >= 1 && winStep <= 8)
+                                    if (winStep >= 1 && winStep <= cycleLength)
                                     {
                                         completionStats[winStep - 1]++;
                                     }
@@ -900,17 +904,17 @@ namespace CalcFen
                             }
                             else if (isBurst)
                             {
-                                // 周期爆掉（8期都没中）
-                                completionStats[8]++;
+                                // 周期爆掉（N期都没中）
+                                completionStats[cycleLength]++;
                             }
                         }
                         
                         // 显示统计结果
-                        for (int i = 0; i < 8; i++)
+                        for (int i = 0; i < cycleLength; i++)
                         {
                             this.lstChuShouStats.Items.Add($"第{i + 1}期中奖完成: {completionStats[i]}次");
                         }
-                        this.lstChuShouStats.Items.Add($"第8期仍未中奖: {completionStats[8]}次");
+                        this.lstChuShouStats.Items.Add($"第{cycleLength}期仍未中奖: {completionStats[cycleLength]}次");
                         
                         this.lstChuShouStats.Items.Add("");
                     }
@@ -924,7 +928,9 @@ namespace CalcFen
                         bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
                         bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
                         
-                        string cycleStatus = isCompleted ? " (完成-中奖)" : (isBurst ? " (爆掉-8期不中)" : " (进行中)");
+                        // 需要获取配置的周期长度
+                        int currentCycleLength = processor.GetCycleLength();
+                        string cycleStatus = isCompleted ? " (完成-中奖)" : (isBurst ? $" (爆掉-{currentCycleLength}期不中)" : " (进行中)");
                         
                         this.lstChuShouStats.Items.Add($"周期 {cycleGroup.Key}{cycleStatus}: 共{cycleRecords.Count}次出手");
                         

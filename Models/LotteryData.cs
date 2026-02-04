@@ -22,12 +22,12 @@ namespace CpCodeSelect.Model
         public int LianXuWeiZhongJiangCount { get; set; }
         public bool IsChuShou { get; set; }
         public bool IsChuShouSuccess { get; set; } // 记录出手后是否中奖（在下一期验证）
-        public int HandNumber { get; set; }  // 出手次数（在8次周期内的序号）
+        public int HandNumber { get; set; }  // 出手次数（在6次周期内的序号）
         public bool IsPartOfCycle { get; set; }  // 是否在出手周期内
         public int CycleNumber { get; set; }  // 所属出手周期编号
-        public int CycleStep { get; set; }   // 在当前周期中的步骤（1-8）
+        public int CycleStep { get; set; }   // 在当前周期中的步骤（1-6）
         public bool IsCycleComplete { get; set; }  // 周期是否因为中奖而完成
-        public bool IsCycleBurst { get; set; } // 周期是否因为8期不中奖而爆掉
+        public bool IsCycleBurst { get; set; } // 周期是否因为6期不中奖而爆掉
         public int Score { get; set; }
         public List<ScoreDetail> ScoreDetails { get; set; }
 

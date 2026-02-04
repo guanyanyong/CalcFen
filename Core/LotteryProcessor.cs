@@ -5,6 +5,7 @@ using System.Linq;
 using CpCodeSelect.Model;
 using CpCodeSelect.Model.ExModel;
 using CpCodeSelect.Util;
+using CpCodeSelect.Config;
 
 namespace CpCodeSelect.Core
 {
@@ -357,9 +358,9 @@ namespace CpCodeSelect.Core
                             }
                         }
                     }
-                    else if (previousData.CycleStep == 8) // 如果上一期出手是第8步
+                    else if (previousData.CycleStep == GetCycleLength()) // 如果上一期出手是第N步（根据配置）
                     {
-                        // 如果当前期没有中奖，并且上一期出手是第8步，则周期爆掉
+                        // 如果当前期没有中奖，并且上一期出手是第N步，则周期爆掉
                         if (!currentData.IsZhongJiang)
                         {
                             // 标记整个周期爆掉
@@ -386,7 +387,7 @@ namespace CpCodeSelect.Core
         
         /// <summary>
         /// 计算出手周期和出手手数
-        /// 严格按照"中奖或达到8期"来完成一个周期的规则
+        /// 严格按照"中奖或达到设定周期数"来完成一个周期的规则
         /// </summary>
         /// <param name="currentData"></param>
         public void CalculateChuShouCycleAndHandNumber(LotteryData currentData)
@@ -418,7 +419,7 @@ namespace CpCodeSelect.Core
 
             // 按照严格的周期规则进行计算：
             // 1. 每个周期从步骤1开始
-            // 2. 当出现中奖或达到第8步时，当前周期完成，下一出手开始新周期
+            // 2. 当出现中奖或达到第N步时，当前周期完成，下一出手开始新周期
             int currentCycle = 1;
             int stepOfCurrentCycle = 1;
 
@@ -442,7 +443,7 @@ namespace CpCodeSelect.Core
                         
                         // 对于第一个出手，我们不能检查它的前一个出手
                         // 检查是否前一个出手导致了周期完成
-                        if (HistoryData[nextResultIndex].IsZhongJiang || prevRecord.CycleStep == 8)
+                        if (HistoryData[nextResultIndex].IsZhongJiang || prevRecord.CycleStep == GetCycleLength())
                         {
                             currentCycle = prevRecord.CycleNumber + 1;
                             stepOfCurrentCycle = 1;
@@ -461,8 +462,8 @@ namespace CpCodeSelect.Core
                     }
                 }
                 
-                // 限制步骤不超过8
-                stepOfCurrentCycle = Math.Min(stepOfCurrentCycle, 8);
+                // 限制步骤不超过设定的周期长度
+                stepOfCurrentCycle = Math.Min(stepOfCurrentCycle, GetCycleLength());
                 
                 // 为当前出手分配周期信息
                 record.CycleNumber = currentCycle;
@@ -724,6 +725,15 @@ namespace CpCodeSelect.Core
         /// <summary>
         /// 重新初始化处理器
         /// </summary>
+        /// <summary>
+        /// 获取当前配置的周期长度
+        /// </summary>
+        /// <returns></returns>
+        public int GetCycleLength()
+        {
+            return AppConfig.Current.TradingSettings.CycleLength;
+        }
+
         public void Reset(bool needReset350Code)
         {
             HistoryData.Clear();
