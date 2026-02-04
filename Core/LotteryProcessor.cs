@@ -138,8 +138,8 @@ namespace CpCodeSelect.Core
                 return;
             }
             
-            // 如果最后执行的期号是数据中最新的期号，也不需要执行
-            if (startIndex == 0)
+            // 如果最后执行的期号是数据中最新的期号（在最后位置），也不需要执行
+            if (startIndex == allData.Count - 1)
             {
                 return; // 数据没有更新，无需执行
             }
@@ -402,6 +402,21 @@ namespace CpCodeSelect.Core
                 return;
             }
 
+            // 优化：预先获取目标数据的索引，避免在循环中重复调用IndexOf
+            int targetIndex = -1;
+            for (int i = 0; i < HistoryData.Count; i++)
+            {
+                if (ReferenceEquals(HistoryData[i], currentData))
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+            
+            // 如果没找到目标数据，直接返回
+            if (targetIndex == -1)
+                return;
+
             // 从头开始重新计算所有出手的周期信息，以确保准确性
             // 找出所有出手记录及其索引
             var allChuShouRecords = new List<(int index, LotteryData data)>();
@@ -412,7 +427,7 @@ namespace CpCodeSelect.Core
                     allChuShouRecords.Add((i, HistoryData[i]));
                     
                     // 如果已经计算到了目标出手，停止添加新记录（但我们仍需要完整循环来计算中间值）
-                    if (i == HistoryData.IndexOf(currentData))
+                    if (i == targetIndex)
                         break;
                 }
             }
@@ -472,7 +487,7 @@ namespace CpCodeSelect.Core
                 record.HandNumber = stepOfCurrentCycle;
                 
                 // 如果这是我们要计算的目标数据，保存结果
-                if (index == HistoryData.IndexOf(currentData))
+                if (index == targetIndex)
                 {
                     currentData.CycleNumber = record.CycleNumber;
                     currentData.CycleStep = record.CycleStep;

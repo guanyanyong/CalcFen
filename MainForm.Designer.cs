@@ -43,6 +43,9 @@ namespace CalcFen
             btnGenerate350Numbers = new Button();
             lstChuShouStats = new ListBox();
             lblChuShouStatsTitle = new Label();
+            btnStartMonitor = new Button();
+            btnStopMonitor = new Button();
+            lblMonitorStatus = new Label();
             SuspendLayout();
             // 
             // btnLoadFile
@@ -74,6 +77,35 @@ namespace CalcFen
             btnProcessMultiple.Text = "处理多期";
             btnProcessMultiple.UseVisualStyleBackColor = true;
             btnProcessMultiple.Click += btnProcessMultiple_Click;
+            // 
+            // btnStartMonitor
+            // 
+            btnStartMonitor.Location = new Point(668, 12);
+            btnStartMonitor.Name = "btnStartMonitor";
+            btnStartMonitor.Size = new Size(120, 30);
+            btnStartMonitor.TabIndex = 12;
+            btnStartMonitor.Text = "启动文件监控";
+            btnStartMonitor.UseVisualStyleBackColor = true;
+            btnStartMonitor.Click += btnStartMonitor_Click;
+            // 
+            // btnStopMonitor
+            // 
+            btnStopMonitor.Location = new Point(668, 48);
+            btnStopMonitor.Name = "btnStopMonitor";
+            btnStopMonitor.Size = new Size(120, 30);
+            btnStopMonitor.TabIndex = 13;
+            btnStopMonitor.Text = "停止文件监控";
+            btnStopMonitor.UseVisualStyleBackColor = true;
+            btnStopMonitor.Click += btnStopMonitor_Click;
+            // 
+            // lblMonitorStatus
+            // 
+            lblMonitorStatus.AutoSize = true;
+            lblMonitorStatus.Location = new Point(12, 503);
+            lblMonitorStatus.Name = "lblMonitorStatus";
+            lblMonitorStatus.Size = new Size(104, 17);
+            lblMonitorStatus.TabIndex = 15;
+            lblMonitorStatus.Text = "文件监控状态: 未启动";
             // 
             // lstQiHao
             // 
@@ -199,6 +231,9 @@ namespace CalcFen
             Controls.Add(lstChuShouStats);
             Controls.Add(lblChuShouStatsTitle);
             Controls.Add(btnReset);
+            Controls.Add(lblMonitorStatus);
+            Controls.Add(btnStopMonitor);
+            Controls.Add(btnStartMonitor);
             Controls.Add(lblStatus);
             Controls.Add(lblScoreTitle);
             Controls.Add(lblQiHaoTitle);

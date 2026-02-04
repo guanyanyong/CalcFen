@@ -22,6 +22,10 @@ namespace CalcFen
         private ScoringEngine scoringEngine;
         private List<LotteryData> processedData;
         private string loadedFilePath; // 记录之前加载的文件路径
+        private FileWatcher fileWatcher;
+        private Button btnStartMonitor;
+        private Button btnStopMonitor;
+        private Label lblMonitorStatus;
 
         public MainForm()
         {
@@ -35,6 +39,7 @@ namespace CalcFen
             processor = new LotteryProcessor();
             scoringEngine = new ScoringEngine();
             processedData = new List<LotteryData>();
+            fileWatcher = new FileWatcher(processor);
             
             // 初始化评分规则
             InitializeScoringRules();
@@ -50,6 +55,17 @@ namespace CalcFen
             {
                 lstChuShouStats.Items.Add("暂无出手记录");
             }
+            
+            // 初始化文件监控状态标签
+            if (lblMonitorStatus != null)
+            {
+                lblMonitorStatus.Text = "文件监控状态: 未启动";
+            }
+            
+            // 订阅文件监控事件
+            fileWatcher.OnFileChanged += OnFileChanged;
+            fileWatcher.OnError += OnFileWatcherError;
+            fileWatcher.OnStatusChanged += OnFileWatcherStatusChanged;
         }
 
         private void InitializeScoringRules()
@@ -535,8 +551,163 @@ namespace CalcFen
             }
         }
 
+        private void btnStartMonitor_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(loadedFilePath))
+            {
+                MessageBox.Show("请先加载一个文件！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                fileWatcher.StartMonitoring(loadedFilePath);
+                lblMonitorStatus.Text = $"文件监控状态: 正在监控 {Path.GetFileName(loadedFilePath)}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"启动文件监控失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnStopMonitor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fileWatcher.StopMonitoring();
+                lblMonitorStatus.Text = "文件监控状态: 未启动";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"停止文件监控失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnFileChanged(string message)
+        {
+            // 在UI线程上调用
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => OnFileChanged(message)));
+                return;
+            }
+
+            // 使用Task.Run在后台线程重新计算所有评分，避免阻塞UI线程
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await RecalculateAllScoresAsync();
+                    
+                    // 计算完成后回到UI线程更新UI
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        try
+                        {
+                            // 确保processor.HistoryData和processedData是同步的
+                            processedData = new List<LotteryData>(processor.HistoryData);
+                            UpdateUiDisplay();
+                            // 重新计算出手统计数据 - 在UI线程上
+                            CalculateChuShouStatistics();
+                            lblStatus.Text = message;
+                        }
+                        catch (Exception uiEx)
+                        {
+                            Console.WriteLine($"UI更新错误: {uiEx.Message}");
+                            lblStatus.Text = "UI更新错误: " + uiEx.Message;
+                        }
+                    }));
+                }
+                catch (Exception calcEx)
+                {
+                    Console.WriteLine($"评分计算错误: {calcEx.Message}");
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        lblStatus.Text = "评分计算错误: " + calcEx.Message;
+                    }));
+                }
+            });
+        }
+
+        private void OnFileWatcherError(string errorMessage)
+        {
+            // 在UI线程上调用
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => OnFileWatcherError(errorMessage)));
+                return;
+            }
+
+            MessageBox.Show(errorMessage, "文件监控错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            lblStatus.Text = $"文件监控错误: {errorMessage}";
+        }
+
+        private void OnFileWatcherStatusChanged(string statusMessage)
+        {
+            // 在UI线程上调用
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => OnFileWatcherStatusChanged(statusMessage)));
+                return;
+            }
+
+            lblStatus.Text = statusMessage;
+        }
+
+        private void UpdateUiDisplay()
+        {
+            // 首先记录当前数据量进行对比
+            int previousCount = lstQiHao.Items.Count;
+            int newHistoryCount = processor.HistoryData.Count;
+            
+            // 临时禁用选择事件，防止在更新期间触发不必要的处理
+            lstQiHao.SelectedIndexChanged -= lstQiHao_SelectedIndexChanged;
+            
+            // 更新期号列表显示
+            lstQiHao.Items.Clear();
+            // 反转顺序显示，让最新的在最上面
+            for (int i = processor.HistoryData.Count - 1; i >= 0; i--)
+            {
+                var result = processor.HistoryData[i];
+                lstQiHao.Items.Add($"{result.QiHao} - {result.Number} ({(result.IsZhongJiang ? "中" : "未中")})");
+            }
+
+            // 先更新processedData，确保在选择事件触发时使用的是最新数据
+            processedData = new List<LotteryData>(processor.HistoryData);
+            
+            // 重新计算出手统计
+            CalculateChuShouStatistics();
+            
+            // 如果有数据，选中最新一期（即列表中的第一项）
+            if (lstQiHao.Items.Count > 0)
+            {
+                lstQiHao.SelectedIndex = 0; // 选中最新一期（列表顶部）
+            }
+            
+            // 重新启用选择事件
+            lstQiHao.SelectedIndexChanged += lstQiHao_SelectedIndexChanged;
+            
+            // 刷新控件以确保显示正确
+            lstQiHao.Refresh();
+            
+            // 强制刷新界面，确保变更立即可见
+            Application.DoEvents();
+            
+            // 输出调试信息
+            Console.WriteLine($"UI更新: 之前条目数={previousCount}, 当前历史数据数={newHistoryCount}, 列表当前条目数={lstQiHao.Items.Count}");
+            if (processor.HistoryData.Count > 0)
+            {
+                var latestData = processor.HistoryData[processor.HistoryData.Count - 1]; // 最新添加的数据
+                Console.WriteLine($"最新期号: {latestData.QiHao}, 最新号码: {latestData.Number}");
+            }
+        }
+
         private void btnReset_Click(object sender, EventArgs e)
         {
+            // 停止文件监控
+            fileWatcher.StopMonitoring();
+            lblMonitorStatus.Text = "文件监控状态: 未启动";
+            
             Reset(true);
         }
         /// <summary>
@@ -545,6 +716,10 @@ namespace CalcFen
         /// <param name="needReset350code">是否需要重新生成350注号码</param>
         private void Reset(bool needReset350code)
         {
+            // 停止文件监控
+            fileWatcher.StopMonitoring();
+            lblMonitorStatus.Text = "文件监控状态: 未启动";
+            
             processor.Reset(needReset350code);
             processedData.Clear();
             lstQiHao.Items.Clear();
@@ -801,13 +976,10 @@ namespace CalcFen
                     }
                 }
             });
-            
-            // 重新计算出手统计数据
-            CalculateChuShouStatistics();
         }
-        
-                // 计算出手统计信息
-        private void CalculateChuShouStatistics()
+
+// 计算出手统计信息
+private void CalculateChuShouStatistics()
         {
             // 清空之前的统计数据
             if (this.lstChuShouStats != null)
