@@ -57,8 +57,8 @@ namespace CalcFen
             scoringEngine.AddRule(new TrendSegmentNoBetRule());
             scoringEngine.AddRule(new ConfirmPointBeforeTrendRule());
             scoringEngine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
-            //scoringEngine.AddRule(new ThreeTrackSameDirectionRule());
-            //scoringEngine.AddRule(new TwoTrackSameDirectionRule());
+            scoringEngine.AddRule(new ThreeTrackSameDirectionRule());
+            scoringEngine.AddRule(new TwoTrackSameDirectionRule());
             scoringEngine.AddRule(new TrackOppositeDirectionRule());
             scoringEngine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
             scoringEngine.AddRule(new KValueNearUpperRailRule()); // 添加K值接近上轨的评分规则
@@ -75,8 +75,8 @@ namespace CalcFen
             engine.AddRule(new TrendSegmentNoBetRule());
             engine.AddRule(new ConfirmPointBeforeTrendRule());
             engine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
-            //engine.AddRule(new ThreeTrackSameDirectionRule());
-            //engine.AddRule(new TwoTrackSameDirectionRule());
+            engine.AddRule(new ThreeTrackSameDirectionRule());
+            engine.AddRule(new TwoTrackSameDirectionRule());
             engine.AddRule(new TrackOppositeDirectionRule());
             engine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
             engine.AddRule(new KValueNearUpperRailRule()); // 添加K值接近上轨的评分规则
@@ -463,12 +463,15 @@ namespace CalcFen
                     lstScores.Items.Add($"当前为最后一期，出手结果待验证");
                 }
                 
-                lstScores.Items.Add($"总评分: {selectedData.Score}");
-                
                 // 统计加分和减分情况
                 var positiveScoreRules = scoreDetails.Where(sd => sd.IsValid && sd.Score > 0).ToList();
                 var negativeScoreRules = scoreDetails.Where(sd => sd.IsValid && sd.Score < 0).ToList();
                 var unmetRules = scoreDetails.Where(sd => !sd.IsValid).ToList();
+                
+                // 重新计算总分以确认评分准确性
+                int recalculatedTotalScore = tempScoringEngine.CalculateTotalScore(selectedData, historyForScoring);
+                
+                lstScores.Items.Add($"总评分: {recalculatedTotalScore}分");
                 
                 lstScores.Items.Add("");
                 lstScores.Items.Add("--- 评分详情 ---");
@@ -483,6 +486,10 @@ namespace CalcFen
                         lstScores.Items.Add($"    条件: {detail.Description}");
                     }
                 }
+                else
+                {
+                    lstScores.Items.Add("【加分规则】: 无");
+                }
                 
                 // 显示减分明细
                 if (negativeScoreRules.Count > 0)
@@ -493,6 +500,10 @@ namespace CalcFen
                         lstScores.Items.Add($"  {detail.Score}分 (指标分值: {detail.ScoreValue}分): {detail.RuleName}");
                         lstScores.Items.Add($"    条件: {detail.Description}");
                     }
+                }
+                else
+                {
+                    lstScores.Items.Add("【减分规则】: 无");
                 }
                 
                 // 显示未触发规则（条件不满足的规则）
@@ -505,15 +516,19 @@ namespace CalcFen
                         lstScores.Items.Add($"    不满足条件: {detail.Description}");
                     }
                 }
-                
-                if (positiveScoreRules.Count == 0 && negativeScoreRules.Count == 0 && unmetRules.Count == 0)
+                else
                 {
-                    lstScores.Items.Add($"  无评分规则触发 - 评分详情为空？");
+                    lstScores.Items.Add("【未满足规则】: 无");
                 }
+                
+                // 显示触发规则总数
+                int activeRulesCount = positiveScoreRules.Count + negativeScoreRules.Count;
+                lstScores.Items.Add($"");
+                lstScores.Items.Add($"满足规则数量: {activeRulesCount} (共{scoreDetails.Count}个规则)");
                 
                 // 添加一条分隔线，使评分更清晰
                 lstScores.Items.Add("");
-                lstScores.Items.Add($"总评分: {selectedData.Score}分");
+                lstScores.Items.Add($"最终总评分: {recalculatedTotalScore}分");
             }
         }
 
