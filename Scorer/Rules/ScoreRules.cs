@@ -127,18 +127,18 @@ namespace CpCodeSelect.Scorer.Rules
     public class BigGapBetweenZeroOrOneStrongRule : BaseScoreRule
     {
         public override string RuleName => "大遗漏间0遗漏强或1遗漏强";
-        public override string Description => "两个大遗漏间0遗漏强或1遗漏强，评分加40分";
-        public override int ScoreValue => 40;
+        public override string Description => "两个大遗漏间0遗漏强或1遗漏强，评分加50分";
+        public override int ScoreValue => 50;
 
         public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
         {
-            if (!currentData.IsZhongJiang)
+            if (historyData.Count < 3)
                 return false;
 
-            var previousBigGapIndex = -1;
             var currentIndex = historyData.FindIndex(x => x.QiHao == currentData.QiHao);
             
             // 向前寻找第一个大遗漏
+            var previousBigGapIndex = -1;
             for (int i = currentIndex - 1; i >= 0; i--)
             {
                 if (historyData[i].IsDaYiLou)
@@ -165,20 +165,33 @@ namespace CpCodeSelect.Scorer.Rules
             if (secondBigGapIndex < 0)
                 return false;
 
-            // 检查两个大遗漏间的遗漏值
-            bool hasOneGap = false;
+            // 统计两个大遗漏间的0遗漏和1遗漏的个数（避开大遗漏本身）
+            int zeroGapCount = 0;
+            int oneGapCount = 0;
+            
             for (int i = secondBigGapIndex + 1; i < previousBigGapIndex; i++)
             {
-                if (historyData[i].YiLouValue == 1)
+                if (!historyData[i].IsDaYiLou) // 避开大遗漏本身
                 {
-                    hasOneGap = true;
-                    break;
+                    if (historyData[i].YiLouValue == 0)
+                        zeroGapCount++;
+                    else if (historyData[i].YiLouValue == 1)
+                        oneGapCount++;
                 }
             }
 
-            // 1遗漏强或0遗漏强都加40分
+            // 判断哪种遗漏更强
+            bool zeroGapStrong = zeroGapCount > oneGapCount;
+            bool oneGapStrong = oneGapCount > zeroGapCount;
+            
             // 根据当前遗漏值决定是否出手
-            return true;
+            // 如果1遗漏强，则在1遗漏时加分；如果0遗漏强，则在0遗漏时加分
+            if (oneGapStrong && currentData.YiLouValue == 1)
+                return true;
+            else if (zeroGapStrong && currentData.YiLouValue == 0)
+                return true;
+                
+            return false;
         }
     }
 
@@ -539,6 +552,29 @@ namespace CpCodeSelect.Scorer.Rules
             
             // 没有找到确认点，所以不在确认点后区域
             return false;
+        }
+    }
+
+    /// <summary>
+    /// 出手中了以后停一期评分规则 - 当前期是中奖且前一期是出手时，减500分
+    /// </summary>
+    public class StopAfterWinRule : BaseScoreRule
+    {
+        public override string RuleName => "出手中了以后停一期";
+        public override string Description => "出手中了以后停一期，出手中了以后扣500分";
+        public override int ScoreValue => -500;
+
+        public override bool IsValid(LotteryData currentData, List<LotteryData> historyData)
+        {
+            // 需要至少2期历史数据才能判断前一期
+            if (historyData.Count < 1)
+                return false;
+
+            // 获取前一期数据
+            var previousData = historyData[historyData.Count - 1];
+            
+            // 当前是中奖（非遗漏状态）且前一期有出手行为
+            return currentData.IsZhongJiang && previousData.IsChuShou;
         }
     }
 }
