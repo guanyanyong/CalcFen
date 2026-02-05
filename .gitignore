@@ -58,6 +58,4 @@
 /Tests/obj/TestApp.csproj.nuget.g.props
 *.config
 /.wucai/conversation.json
-/.vs/ProjectEvaluation/calcfen.metadata.v8.bin
-/.vs/ProjectEvaluation/calcfen.projects.v8.bin
-/.vs/ProjectEvaluation/calcfen.strings.v8.bin
+/.vs/
