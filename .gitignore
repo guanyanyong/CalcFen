@@ -59,3 +59,7 @@
 *.config
 /.wucai/conversation.json
 /.vs/
+/Tests/bin/Debug/net6.0-windows
+/Tests/obj/Debug/net6.0-windows
+/Tests/obj/TestApp.csproj.nuget.g.targets
+/bin/Debug/net6.0-windows/appsettings.json
