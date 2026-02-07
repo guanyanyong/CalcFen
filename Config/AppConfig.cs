@@ -41,8 +41,8 @@ namespace CpCodeSelect.Config
                     Current.TradingSettings = new TradingSettings { CycleLength = 6 };
                 }
                 
-                // 验证周期长度是否在合理范围内
-                if (Current.TradingSettings.CycleLength != 6 && Current.TradingSettings.CycleLength != 8)
+                // 验证周期长度是否在合理范围内（必须大于等于3）
+                if (Current.TradingSettings.CycleLength < 3)
                 {
                     Current.TradingSettings.CycleLength = 6; // 默认为6
                 }

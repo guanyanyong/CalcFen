@@ -8,9 +8,9 @@ using CpCodeSelect.Scorer.Rules;
 
 namespace TestApp
 {
-    class Program
+    class TestProgram
     {
-        static void Main1(string[] args)
+        static void OldMain(string[] args)
         {
             Console.WriteLine("彩票评分系统测试");
             
