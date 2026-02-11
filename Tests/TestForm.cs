@@ -37,6 +37,13 @@ namespace TestApp
             // 设置界面
             nudRounds.Value = 5;
             lblStatus.Text = "测试系统就绪";
+            lblTotalFlow.Text = "总流水：0.0 元";
+            
+            // 初始化出手统计列表框
+            if (lstChuShouStats != null)
+            {
+                lstChuShouStats.Items.Add("暂无出手记录");
+            }
         }
 
         private void InitializeScoringRules()
@@ -315,7 +322,263 @@ namespace TestApp
             int totalBursts = testRounds.Sum(r => r.BurstCount);
             int totalChuShou = testRounds.Sum(r => r.ChuShouCount);
 
+            // 计算总流水
+            double totalFlow = CalculateTotalFlow();
+
             lblOverallStats.Text = $"总体统计：总中奖 {totalWins} 个，总爆掉 {totalBursts} 个，总出手 {totalChuShou} 次";
+            lblTotalFlow.Text = $"总流水：{totalFlow:F1} 元";
+
+            // 更新出手统计
+            CalculateChuShouStatistics();
+        }
+
+        private double CalculateTotalFlow()
+        {
+            double totalFlow = 0;
+
+            foreach (var round in testRounds)
+            {
+                var chuShouRecords = round.Processor.HistoryData.Where(d => d.IsChuShou).ToList();
+                var cycles = chuShouRecords.GroupBy(d => d.CycleNumber).ToList();
+                
+                foreach (var cycleGroup in cycles)
+                {
+                    var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
+                    
+                    // 按照出手步骤顺序累加流水
+                    for (int step = 1; step <= 8; step++)
+                    {
+                        var stepRecord = cycleRecords.FirstOrDefault(d => d.CycleStep == step);
+                        
+                        // 如果当前步骤有出手记录，则累加对应流水
+                        if (stepRecord != null)
+                        {
+                            switch (step)
+                            {
+                                case 1:
+                                    totalFlow += 56.7;
+                                    break;
+                                case 2:
+                                    totalFlow += 145.2;
+                                    break;
+                                case 3:
+                                    totalFlow += 283.8;
+                                    break;
+                                case 4:
+                                    totalFlow += 500.8;
+                                    break;
+                                case 5:
+                                    totalFlow += 840.3;
+                                    break;
+                                case 6:
+                                    totalFlow += 1371.3;
+                                    break;
+                                case 7:
+                                    totalFlow += 2202.2;
+                                    break;
+                                case 8:
+                                    totalFlow += 3502.1;
+                                    break;
+                            }
+                            
+                            // 如果第8步出手了，无论是否中奖（即使爆掉）都要加上第8步的流水
+                            if (step == 8)
+                            {
+                                break; // 达到第8步后停止循环
+                            }
+                        }
+                        else
+                        {
+                            // 如果当前步骤没有出手记录，表示周期提前结束（可能是完成了或者爆掉了）
+                            // 那就不继续这个周期的处理
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return totalFlow;
+        }
+
+        // 计算出手统计信息
+        private void CalculateChuShouStatistics()
+        {
+            // 清空之前的统计数据
+            if (this.lstChuShouStats != null)
+            {
+                try
+                {
+                    this.lstChuShouStats.Items.Clear();
+
+                    // 统计所有测试轮次中的出手记录
+                    var allChuShouRecords = new List<LotteryData>();
+                    foreach (var round in testRounds)
+                    {
+                        var roundChuShouRecords = round.Processor.HistoryData.Where(d => d.IsChuShou).ToList();
+                        allChuShouRecords.AddRange(roundChuShouRecords);
+                    }
+
+                    if (allChuShouRecords.Count == 0)
+                    {
+                        this.lstChuShouStats.Items.Add("暂无出手记录");
+                        return;
+                    }
+
+                    this.lstChuShouStats.Items.Add($"总出手次数: {allChuShouRecords.Count}");
+                    this.lstChuShouStats.Items.Add($"总中奖次数: {allChuShouRecords.Count(d => d.IsChuShouSuccess)}");
+                    this.lstChuShouStats.Items.Add($"整体中奖率: {(allChuShouRecords.Count > 0 ? (double)allChuShouRecords.Count(d => d.IsChuShouSuccess) / allChuShouRecords.Count * 100 : 0):F2}%");
+                    this.lstChuShouStats.Items.Add("");
+
+                    // 按周期分组，然后基于分组结果进行统计
+                    var cycles = allChuShouRecords
+                        .GroupBy(d => d.CycleNumber)
+                        .OrderBy(g => g.Key)
+                        .ToList();
+
+                    if (cycles.Count > 0)
+                    {
+                        // 获取最大连续亏损次数作为周期长度
+                        int cycleLength = maxContinuousLosses;
+
+                        // 统计完成的周期数和爆掉的周期数
+                        int completedCycles = cycles.Count(c => c.Any(d => d.IsCycleComplete));
+                        int burstCycles = cycles.Count(c => c.Any(d => d.IsCycleBurst));
+                        int totalCycles = cycles.Count;
+
+                        this.lstChuShouStats.Items.Add($"=== 周期统计数据 ===");
+                        this.lstChuShouStats.Items.Add($"总周期数: {totalCycles}");
+                        this.lstChuShouStats.Items.Add($"完成周期数(中奖完成): {completedCycles}");
+                        this.lstChuShouStats.Items.Add($"爆掉周期数({cycleLength}期不中奖): {burstCycles}");
+                        this.lstChuShouStats.Items.Add($"周期成功率: {(totalCycles > 0 ? (double)(totalCycles - burstCycles) / totalCycles * 100 : 0):F2}%");
+
+                        // 重新基于周期分组进行统计第1-N期的出手分布
+                        this.lstChuShouStats.Items.Add("");
+                        this.lstChuShouStats.Items.Add($"=== 第1-{cycleLength}期出手分布 ===");
+                        for (int step = 1; step <= cycleLength; step++)
+                        {
+                            // 遍历每个周期中的每个出手来统计步骤分布
+                            var stepRecords = new List<LotteryData>();
+                            foreach (var cycleGroup in cycles)
+                            {
+                                var cycleSteps = cycleGroup.Where(d => d.CycleStep == step).ToList();
+                                stepRecords.AddRange(cycleSteps);
+                            }
+
+                            int successCount = stepRecords.Count(d => d.IsChuShouSuccess);
+                            this.lstChuShouStats.Items.Add($"第{step}期中: {stepRecords.Count}次。(中奖{successCount}次)");
+                        }
+
+                        // 统计出手周期完成情况：从第1期到第N期中奖的各种情况
+                        this.lstChuShouStats.Items.Add("");
+                        this.lstChuShouStats.Items.Add($"=== 出手周期完成统计 (1-{cycleLength}期中奖或{cycleLength}期全不中) ===");
+
+                        // 初始化统计数组，索引0-N分别代表在第1-N期中奖和N期都不中奖
+                        int[] completionStats = new int[cycleLength + 1];
+                        for (int i = 0; i < cycleLength + 1; i++)
+                        {
+                            completionStats[i] = 0;
+                        }
+
+                        // 遍历每个周期，统计在第几步完成或失败
+                        foreach (var cycleGroup in cycles)
+                        {
+                            var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
+
+                            // 检查这个周期是完成还是爆掉
+                            bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
+                            bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
+
+                            if (isCompleted)
+                            {
+                                // 周期完成，找出在哪一步中奖的
+                                var winningRecord = cycleRecords.FirstOrDefault(d => d.IsChuShouSuccess);
+                                if (winningRecord != null)
+                                {
+                                    int winStep = winningRecord.CycleStep;
+                                    if (winStep >= 1 && winStep <= cycleLength)
+                                    {
+                                        completionStats[winStep - 1]++;
+                                    }
+                                }
+                            }
+                            else if (isBurst)
+                            {
+                                // 周期爆掉（N期都没中）
+                                completionStats[cycleLength]++;
+                            }
+                        }
+
+                        // 显示统计结果
+                        for (int i = 0; i < cycleLength; i++)
+                        {
+                            this.lstChuShouStats.Items.Add($"第{i + 1}期中奖完成: {completionStats[i]}次");
+                        }
+                        this.lstChuShouStats.Items.Add($"第{cycleLength}期仍未中奖: {completionStats[cycleLength]}次");
+
+                        this.lstChuShouStats.Items.Add("");
+                    }
+
+                    this.lstChuShouStats.Items.Add("=== 按周期分组的出手记录 ===");
+
+                    // 按测试轮次分组显示周期信息
+                    int roundIndex = 1;
+                    foreach (var round in testRounds)
+                    {
+                        var roundChuShouRecords = round.Processor.HistoryData.Where(d => d.IsChuShou).ToList();
+                        var roundCycles = roundChuShouRecords
+                            .GroupBy(d => d.CycleNumber)
+                            .OrderBy(g => g.Key)
+                            .ToList();
+
+                        if (roundCycles.Count > 0)
+                        {
+                            this.lstChuShouStats.Items.Add($"--- 第{roundIndex}轮 ---");
+                            
+                            // 按周期分组显示记录
+                            foreach (var cycleGroup in roundCycles)
+                            {
+                                var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
+                                bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
+                                bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
+
+                                // 需要获取配置的周期长度
+                                int currentCycleLength = maxContinuousLosses;
+                                string cycleStatus = isCompleted ? " (完成-中奖)" : (isBurst ? $" (爆掉-{currentCycleLength}期不中)" : " (进行中)");
+
+                                this.lstChuShouStats.Items.Add($"周期 {cycleGroup.Key}{cycleStatus}: 共{cycleRecords.Count}次出手");
+
+                                // 显示该周期内每一次出手
+                                foreach (var record in cycleRecords)
+                                {
+                                    string zhongjiangStatus = record.IsChuShouSuccess ? "中奖" : "未中";
+                                    string nextPeriodInfo = "";
+
+                                    // 获取下一期的开奖号，用于验证出手结果
+                                    int currentIndex = round.Processor.HistoryData.IndexOf(record);
+                                    if (currentIndex >= 0 && currentIndex < round.Processor.HistoryData.Count - 1)
+                                    {
+                                        var nextRecord = round.Processor.HistoryData[currentIndex + 1];
+                                        nextPeriodInfo = $"[下期{nextRecord.QiHao}:{nextRecord.Number}]";
+                                    }
+
+                                    this.lstChuShouStats.Items.Add($"  步骤{record.CycleStep} - 期号 {record.QiHao}: {record.Number} (出手->{zhongjiangStatus}) {nextPeriodInfo}");
+                                }
+
+                                this.lstChuShouStats.Items.Add("");
+                            }
+                        }
+                        roundIndex++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 如果出现异常，添加错误信息
+                    if (this.lstChuShouStats != null)
+                    {
+                        this.lstChuShouStats.Items.Add($"计算出手统计时出错: {ex.Message}");
+                    }
+                }
+            }
         }
 
         private void lbRounds_SelectedIndexChanged(object sender, EventArgs e)
@@ -332,6 +595,168 @@ namespace TestApp
                     string info = $"{data.QiHao} - {data.Number} ({(data.IsZhongJiang ? "中" : "未中")})";
                     if (data.IsChuShou) info += " [出手]";
                     lbPeriods.Items.Add(info);
+                }
+                
+                // 更新出手统计，显示选中轮次的统计信息
+                UpdateRoundSpecificStats(selectedRound.RoundNumber);
+            }
+        }
+
+        private void UpdateRoundSpecificStats(int roundNumber)
+        {
+            if (this.lstChuShouStats != null)
+            {
+                try
+                {
+                    this.lstChuShouStats.Items.Clear();
+
+                    var selectedRound = testRounds.FirstOrDefault(r => r.RoundNumber == roundNumber);
+                    if (selectedRound == null) return;
+
+                    var chuShouRecords = selectedRound.Processor.HistoryData.Where(d => d.IsChuShou).ToList();
+
+                    if (chuShouRecords.Count == 0)
+                    {
+                        this.lstChuShouStats.Items.Add($"第{roundNumber}轮暂无出手记录");
+                        return;
+                    }
+
+                    this.lstChuShouStats.Items.Add($"第{roundNumber}轮 - 总出手次数: {chuShouRecords.Count}");
+                    this.lstChuShouStats.Items.Add($"第{roundNumber}轮 - 总中奖次数: {chuShouRecords.Count(d => d.IsChuShouSuccess)}");
+                    this.lstChuShouStats.Items.Add($"第{roundNumber}轮 - 中奖率: {(chuShouRecords.Count > 0 ? (double)chuShouRecords.Count(d => d.IsChuShouSuccess) / chuShouRecords.Count * 100 : 0):F2}%");
+                    this.lstChuShouStats.Items.Add("");
+
+                    // 按周期分组，然后基于分组结果进行统计
+                    var cycles = chuShouRecords
+                        .GroupBy(d => d.CycleNumber)
+                        .OrderBy(g => g.Key)
+                        .ToList();
+
+                    if (cycles.Count > 0)
+                    {
+                        // 获取最大连续亏损次数作为周期长度
+                        int cycleLength = maxContinuousLosses;
+
+                        // 统计完成的周期数和爆掉的周期数
+                        int completedCycles = cycles.Count(c => c.Any(d => d.IsCycleComplete));
+                        int burstCycles = cycles.Count(c => c.Any(d => d.IsCycleBurst));
+                        int totalCycles = cycles.Count;
+
+                        this.lstChuShouStats.Items.Add($"=== 第{roundNumber}轮周期统计数据 ===");
+                        this.lstChuShouStats.Items.Add($"总周期数: {totalCycles}");
+                        this.lstChuShouStats.Items.Add($"完成周期数(中奖完成): {completedCycles}");
+                        this.lstChuShouStats.Items.Add($"爆掉周期数({cycleLength}期不中奖): {burstCycles}");
+                        this.lstChuShouStats.Items.Add($"周期成功率: {(totalCycles > 0 ? (double)(totalCycles - burstCycles) / totalCycles * 100 : 0):F2}%");
+
+                        // 重新基于周期分组进行统计第1-N期的出手分布
+                        this.lstChuShouStats.Items.Add("");
+                        this.lstChuShouStats.Items.Add($"=== 第1-{cycleLength}期出手分布 ===");
+                        for (int step = 1; step <= cycleLength; step++)
+                        {
+                            // 遍历每个周期中的每个出手来统计步骤分布
+                            var stepRecords = new List<LotteryData>();
+                            foreach (var cycleGroup in cycles)
+                            {
+                                var cycleSteps = cycleGroup.Where(d => d.CycleStep == step).ToList();
+                                stepRecords.AddRange(cycleSteps);
+                            }
+
+                            int successCount = stepRecords.Count(d => d.IsChuShouSuccess);
+                            this.lstChuShouStats.Items.Add($"第{step}期中: {stepRecords.Count}次。(中奖{successCount}次)");
+                        }
+
+                        // 统计出手周期完成情况：从第1期到第N期中奖的各种情况
+                        this.lstChuShouStats.Items.Add("");
+                        this.lstChuShouStats.Items.Add($"=== 出手周期完成统计 (1-{cycleLength}期中奖或{cycleLength}期全不中) ===");
+
+                        // 初始化统计数组，索引0-N分别代表在第1-N期中奖和N期都不中奖
+                        int[] completionStats = new int[cycleLength + 1];
+                        for (int i = 0; i < cycleLength + 1; i++)
+                        {
+                            completionStats[i] = 0;
+                        }
+
+                        // 遍历每个周期，统计在第几步完成或失败
+                        foreach (var cycleGroup in cycles)
+                        {
+                            var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
+
+                            // 检查这个周期是完成还是爆掉
+                            bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
+                            bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
+
+                            if (isCompleted)
+                            {
+                                // 周期完成，找出在哪一步中奖的
+                                var winningRecord = cycleRecords.FirstOrDefault(d => d.IsChuShouSuccess);
+                                if (winningRecord != null)
+                                {
+                                    int winStep = winningRecord.CycleStep;
+                                    if (winStep >= 1 && winStep <= cycleLength)
+                                    {
+                                        completionStats[winStep - 1]++;
+                                    }
+                                }
+                            }
+                            else if (isBurst)
+                            {
+                                // 周期爆掉（N期都没中）
+                                completionStats[cycleLength]++;
+                            }
+                        }
+
+                        // 显示统计结果
+                        for (int i = 0; i < cycleLength; i++)
+                        {
+                            this.lstChuShouStats.Items.Add($"第{i + 1}期中奖完成: {completionStats[i]}次");
+                        }
+                        this.lstChuShouStats.Items.Add($"第{cycleLength}期仍未中奖: {completionStats[cycleLength]}次");
+
+                        this.lstChuShouStats.Items.Add("");
+                    }
+
+                    this.lstChuShouStats.Items.Add("=== 按周期分组的出手记录 ===");
+
+                    // 按周期分组显示记录
+                    foreach (var cycleGroup in cycles)
+                    {
+                        var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
+                        bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
+                        bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
+
+                        // 需要获取配置的周期长度
+                        int currentCycleLength = maxContinuousLosses;
+                        string cycleStatus = isCompleted ? " (完成-中奖)" : (isBurst ? $" (爆掉-{currentCycleLength}期不中)" : " (进行中)");
+
+                        this.lstChuShouStats.Items.Add($"周期 {cycleGroup.Key}{cycleStatus}: 共{cycleRecords.Count}次出手");
+
+                        // 显示该周期内每一次出手
+                        foreach (var record in cycleRecords)
+                        {
+                            string zhongjiangStatus = record.IsChuShouSuccess ? "中奖" : "未中";
+                            string nextPeriodInfo = "";
+
+                            // 获取下一期的开奖号，用于验证出手结果
+                            int currentIndex = selectedRound.Processor.HistoryData.IndexOf(record);
+                            if (currentIndex >= 0 && currentIndex < selectedRound.Processor.HistoryData.Count - 1)
+                            {
+                                var nextRecord = selectedRound.Processor.HistoryData[currentIndex + 1];
+                                nextPeriodInfo = $"[下期{nextRecord.QiHao}:{nextRecord.Number}]";
+                            }
+
+                            this.lstChuShouStats.Items.Add($"  步骤{record.CycleStep} - 期号 {record.QiHao}: {record.Number} (出手->{zhongjiangStatus}) {nextPeriodInfo}");
+                        }
+
+                        this.lstChuShouStats.Items.Add("");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 如果出现异常，添加错误信息
+                    if (this.lstChuShouStats != null)
+                    {
+                        this.lstChuShouStats.Items.Add($"计算出手统计时出错: {ex.Message}");
+                    }
                 }
             }
         }
@@ -478,6 +903,8 @@ namespace TestApp
         private ListBox lstScores;
         private Label lblStatus;
         private Label lblOverallStats;
+        private Label lblTotalFlow;
+        private ListBox lstChuShouStats;
 
         private void InitializeComponent()
         {
@@ -490,6 +917,8 @@ namespace TestApp
             this.lstScores = new System.Windows.Forms.ListBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblOverallStats = new System.Windows.Forms.Label();
+            this.lblTotalFlow = new System.Windows.Forms.Label();
+            this.lstChuShouStats = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudRounds)).BeginInit();
             this.SuspendLayout();
             // 
@@ -573,9 +1002,29 @@ namespace TestApp
             this.lblOverallStats.TabIndex = 6;
             this.lblOverallStats.Text = "总体统计：总中奖 0 个，总爆掉 0 个";
             // 
+            // lblTotalFlow
+            // 
+            this.lblTotalFlow.AutoSize = true;
+            this.lblTotalFlow.Location = new System.Drawing.Point(12, 363);
+            this.lblTotalFlow.Name = "lblTotalFlow";
+            this.lblTotalFlow.Size = new System.Drawing.Size(100, 12);
+            this.lblTotalFlow.TabIndex = 7;
+            this.lblTotalFlow.Text = "总流水：0.0 元";
+            // 
+            // lstChuShouStats
+            // 
+            this.lstChuShouStats.FormattingEnabled = true;
+            this.lstChuShouStats.ItemHeight = 12;
+            this.lstChuShouStats.Location = new System.Drawing.Point(12, 385);
+            this.lstChuShouStats.Name = "lstChuShouStats";
+            this.lstChuShouStats.Size = new System.Drawing.Size(812, 136);
+            this.lstChuShouStats.TabIndex = 8;
+            // 
             // TestForm
             // 
-            this.ClientSize = new System.Drawing.Size(836, 362);
+            this.ClientSize = new System.Drawing.Size(836, 535);
+            this.Controls.Add(this.lstChuShouStats);
+            this.Controls.Add(this.lblTotalFlow);
             this.Controls.Add(this.btnView350Numbers); // 添加新按钮到控件列表
             this.Controls.Add(this.lblOverallStats);
             this.Controls.Add(this.lblStatus);
