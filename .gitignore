@@ -63,3 +63,8 @@
 /Tests/obj/Debug/net6.0-windows
 /Tests/obj/TestApp.csproj.nuget.g.targets
 /bin/Debug/net6.0-windows/appsettings.json
+/bin/Debug/net6.0
+/Tests/obj/Debug/net6.0-windows/TestApp.GeneratedMSBuildEditorConfig.editorconfig
+/Tests/obj/TestAppFixed.csproj.nuget.dgspec.json
+/Tests/obj
+/.wucai/conversation.json.bak
