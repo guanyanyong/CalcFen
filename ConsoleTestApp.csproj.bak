@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="BaseCodeInfo.cs" />
+    <Compile Include="Bolling.cs" />
+    <Compile Include="BollingerBandsSimple.cs" />
+    <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Core\LotteryProcessor.cs" />
+    <Compile Include="KLine.cs" />
+    <Compile Include="Models\LotteryData.cs" />
+    <Compile Include="PositionNumber.cs" />
+    <Compile Include="PositionType.cs" />
+    <Compile Include="Scorer\BaseScoreRule.cs" />
+    <Compile Include="Scorer\Rules\*.cs" />
+    <Compile Include="Tests\MyTestRunner.cs" />
+    <Compile Include="Tests\TestMainFormFunctionality.cs" />
+  </ItemGroup>
+
+</Project>

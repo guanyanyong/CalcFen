@@ -84,6 +84,7 @@ namespace CalcFen
             scoringEngine.AddRule(new ContinuousChuShouLimitRule()); // 添加连续出手限制评分规则
             scoringEngine.AddRule(new SecondChuShouLimitRule()); // 添加连续第二手限制规则
             scoringEngine.AddRule(new StopAfterWinRule()); // 添加出手中了以后停一期的规则
+            scoringEngine.AddRule(new OpeningHornRule()); // 添加开口型喇叭评分规则
         }
 
         // 为评分引擎添加评分规则的方法
@@ -103,6 +104,7 @@ namespace CalcFen
             engine.AddRule(new ContinuousChuShouLimitRule()); // 添加连续出手限制评分规则
             engine.AddRule(new SecondChuShouLimitRule()); // 添加连续第二手限制规则
             engine.AddRule(new StopAfterWinRule()); // 添加出手中了以后停一期的规则
+            engine.AddRule(new OpeningHornRule()); // 添加开口型喇叭评分规则
         }
 
         private async void btnLoadFile_Click(object sender, EventArgs e)

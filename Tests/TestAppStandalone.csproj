@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\BaseCodeInfo.cs" Link="BaseCodeInfo.cs" />
+    <Compile Include="..\Bolling.cs" Link="Bolling.cs" />
+    <Compile Include="..\BollingerBandsSimple.cs" Link="BollingerBandsSimple.cs" />
+    <Compile Include="..\Code.cs" Link="Code.cs" />
+    <Compile Include="..\Config\AppConfig.cs" Link="Config\AppConfig.cs" />
+    <Compile Include="..\Core\FileWatcher.cs" Link="Core\FileWatcher.cs" />
+    <Compile Include="..\Core\LotteryProcessor.cs" Link="Core\LotteryProcessor.cs" />
+    <Compile Include="..\Hou3Select350_ZhouQiZhong.cs" Link="Hou3Select350_ZhouQiZhong.cs" />
+    <Compile Include="..\KLine.cs" Link="KLine.cs" />
+    <Compile Include="..\Models\LotteryData.cs" Link="Models\LotteryData.cs" />
+    <Compile Include="..\PositionNumber.cs" Link="PositionNumber.cs" />
+    <Compile Include="..\PositionType.cs" Link="PositionType.cs" />
+    <Compile Include="..\Scorer\BaseScoreRule.cs" Link="Scorer\BaseScoreRule.cs" />
+    <Compile Include="..\Scorer\Rules\*.cs" Link="Scorer\Rules\%(Filename).cs" />
+    <Compile Include="TestForm.cs" />
+    <Compile Include="TestFormProgram.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\TXFFC.txt" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\TXFFC.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\appsettings.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

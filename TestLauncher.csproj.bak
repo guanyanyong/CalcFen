@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>TestApp</AssemblyName>
+    <RootNamespace>TestApp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="BaseCodeInfo.cs" />
+    <Compile Include="Bolling.cs" />
+    <Compile Include="BollingerBandsSimple.cs" />
+    <Compile Include="Code.cs" />
+    <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Core\FileWatcher.cs" />
+    <Compile Include="Core\LotteryProcessor.cs" />
+    <Compile Include="Hou3Select350_ZhouQiZhong.cs" />
+    <Compile Include="KLine.cs" />
+    <Compile Include="MainForm.cs" />
+    <Compile Include="Models\LotteryData.cs" />
+    <Compile Include="PositionNumber.cs" />
+    <Compile Include="PositionType.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Scorer\BaseScoreRule.cs" />
+    <Compile Include="Scorer\Rules\*.cs" />
+    <Compile Include="Tests\TestForm.cs" />
+    <Compile Include="Tests\TestFormProgram.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="TXFFC.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TXFFC.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

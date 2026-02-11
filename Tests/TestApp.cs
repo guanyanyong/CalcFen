@@ -67,11 +67,17 @@ namespace TestApp
             }
             else
             {
-                Console.WriteLine("..\\TXFFC.txt 文件不存在，请确保文件存在后再运行测试。");
+                Console.WriteLine(@"..\\TXFFC.txt 文件不存在，请确保文件存在后再运行测试。");
             }
             
-            Console.WriteLine("\\n按任意键退出...");
+            Console.WriteLine("\n按任意键退出...");
             Console.ReadKey();
+        }
+        
+        static void OLDMain2(string[] args)
+        {
+            // 调用新的测试功能
+            //TestMainFormFunctionality.Main(args);
         }
     }
 }
