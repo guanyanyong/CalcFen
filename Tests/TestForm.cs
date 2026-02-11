@@ -147,10 +147,13 @@ namespace TestApp
                     var lines = System.IO.File.ReadAllLines(filePath);
                     var data = new List<(string qiHao, string number)>();
 
-                    foreach (var line in lines)
+                    // 文件中第一行是最新的期号，为了按时间顺序从旧到新处理，
+                    // 我们需要颠倒顺序，让最早的期号在前面
+                    for (int i = lines.Length - 1; i >= 0; i--)
                     {
-                        if (string.IsNullOrWhiteSpace(line)) continue;
-
+                        var line = lines[i].Trim();
+                        if (string.IsNullOrEmpty(line)) continue;
+                        
                         var parts = line.Split('\t');
                         if (parts.Length >= 2)
                         {
