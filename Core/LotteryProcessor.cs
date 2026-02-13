@@ -748,6 +748,10 @@ namespace CpCodeSelect.Core
         {
             return AppConfig.Current.TradingSettings.CycleLength;
         }
+        public static string TxffcFilePath()
+        {
+           return AppConfig.Current.FileSettings.TxffcFilePath;
+        }
 
         public void Reset(bool needReset350Code)
         {

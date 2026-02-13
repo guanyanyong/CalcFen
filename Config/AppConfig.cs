@@ -9,7 +9,9 @@ namespace CpCodeSelect.Config
         public TradingSettings TradingSettings { get; set; }
         
         public static AppConfig Current { get; private set; }
-        
+
+        public FileSettings FileSettings { get; set; }
+
         static AppConfig()
         {
             LoadConfig();
@@ -24,7 +26,8 @@ namespace CpCodeSelect.Config
                 // 如果配置文件不存在，创建默认配置
                 Current = new AppConfig
                 {
-                    TradingSettings = new TradingSettings { CycleLength = 6 }
+                    TradingSettings = new TradingSettings { CycleLength = 6 },
+                    FileSettings = new FileSettings()
                 };
                 SaveConfig();
                 return;
@@ -76,5 +79,9 @@ namespace CpCodeSelect.Config
     public class TradingSettings
     {
         public int CycleLength { get; set; } = 6;
+    }
+    public class FileSettings
+    {
+        public string TxffcFilePath { get; set; } 
     }
 }

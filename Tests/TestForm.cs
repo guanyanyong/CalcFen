@@ -8,6 +8,7 @@ using CpCodeSelect.Scorer;
 using CpCodeSelect.Scorer.Rules;
 using CpCodeSelect.Model;
 using TestApp;
+using System.Diagnostics;
 
 namespace TestApp
 {
@@ -89,12 +90,29 @@ namespace TestApp
                 };
 
                 // 复制规则到新引擎
-                foreach (var rule in globalScoringEngine.GetType().GetField("_rules", 
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                    .GetValue(globalScoringEngine) as List<IScoreRule>)
-                {
-                    round.ScoringEngine.AddRule(rule);
-                }
+                //foreach (var rule in globalScoringEngine.GetType().GetField("_rules",
+                //    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                //    .GetValue(globalScoringEngine) as List<IScoreRule>)
+                //{
+                //    round.ScoringEngine.AddRule(rule);
+                //}
+
+
+                round.ScoringEngine.AddRule(new KValueBelowMiddleNoBetRule());
+                round.ScoringEngine.AddRule(new TrendSegmentNoBetRule());
+                round.ScoringEngine.AddRule(new ConfirmPointBeforeTrendRule());
+                round.ScoringEngine.AddRule(new BigGapBetweenZeroOrOneStrongRule());
+                round.ScoringEngine.AddRule(new ThreeTrackSameDirectionRule());
+                round.ScoringEngine.AddRule(new TwoTrackSameDirectionRule());
+                round.ScoringEngine.AddRule(new TrackOppositeDirectionRule());
+                round.ScoringEngine.AddRule(new KValueBreakMiddleNotTouchUpperRule());
+                round.ScoringEngine.AddRule(new KValueNearUpperRailRule());
+                round.ScoringEngine.AddRule(new YiLouValueRule());
+                round.ScoringEngine.AddRule(new BollingerUpperDeclineRule());
+                round.ScoringEngine.AddRule(new ContinuousChuShouLimitRule());
+                round.ScoringEngine.AddRule(new SecondChuShouLimitRule());
+                round.ScoringEngine.AddRule(new StopAfterWinRule());
+                round.ScoringEngine.AddRule(new OpeningHornRule());
 
                 // 加载数据并处理
                 var realData = LoadRealData();
@@ -148,7 +166,11 @@ namespace TestApp
         {
             try
             {
-                string filePath = "..\\..\\..\\TXFFC.txt";
+                string filePath = LotteryProcessor.TxffcFilePath();
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    filePath = "..\\..\\..\\TXFFC.txt";
+                }
                 if (System.IO.File.Exists(filePath))
                 {
                     var lines = System.IO.File.ReadAllLines(filePath);
@@ -345,8 +367,33 @@ namespace TestApp
                 {
                     var cycleRecords = cycleGroup.OrderBy(d => d.CycleStep).ToList();
                     
-                    // 按照出手步骤顺序累加流水
-                    for (int step = 1; step <= 8; step++)
+                    // 检查这个周期是否完成或爆掉，找出周期结束的实际步骤
+                    bool isCompleted = cycleRecords.Any(d => d.IsCycleComplete);
+                    bool isBurst = cycleRecords.Any(d => d.IsCycleBurst);
+                    
+                    // 找到周期结束的步骤号（中奖完成或爆掉的步骤）
+                    int endStep = 8; // 默认到第8步
+                    if (isCompleted)
+                    {
+                        // 找出在哪个步骤中奖完成
+                        var winningRecord = cycleRecords.FirstOrDefault(d => d.IsChuShouSuccess);
+                        if (winningRecord != null)
+                        {
+                            endStep = winningRecord.CycleStep;
+                        }
+                    }
+                    else if (isBurst)
+                    {
+                        // 找出在哪一步爆掉
+                        var burstRecord = cycleRecords.FirstOrDefault(d => d.IsCycleBurst);
+                        if (burstRecord != null)
+                        {
+                            endStep = burstRecord.CycleStep;
+                        }
+                    }
+                    
+                    // 按照出手步骤顺序累加流水，但不超出周期实际结束步骤
+                    for (int step = 1; step <= endStep; step++)
                     {
                         var stepRecord = cycleRecords.FirstOrDefault(d => d.CycleStep == step);
                         
@@ -359,38 +406,31 @@ namespace TestApp
                                     totalFlow += 56.7;
                                     break;
                                 case 2:
-                                    totalFlow += 145.2;
+                                    totalFlow += 88.5;
                                     break;
                                 case 3:
-                                    totalFlow += 283.8;
+                                    totalFlow += 138.6;
                                     break;
                                 case 4:
-                                    totalFlow += 500.8;
+                                    totalFlow += 217;
                                     break;
                                 case 5:
-                                    totalFlow += 840.3;
+                                    totalFlow += 339.5;
                                     break;
                                 case 6:
-                                    totalFlow += 1371.3;
+                                    totalFlow += 530.9;
                                     break;
                                 case 7:
-                                    totalFlow += 2202.2;
+                                    totalFlow += 830.9;
                                     break;
                                 case 8:
-                                    totalFlow += 3502.1;
+                                    totalFlow += 1299.9;
                                     break;
-                            }
-                            
-                            // 如果第8步出手了，无论是否中奖（即使爆掉）都要加上第8步的流水
-                            if (step == 8)
-                            {
-                                break; // 达到第8步后停止循环
                             }
                         }
                         else
                         {
-                            // 如果当前步骤没有出手记录，表示周期提前结束（可能是完成了或者爆掉了）
-                            // 那就不继续这个周期的处理
+                            // 如果当前步骤没有出手记录，就不继续这个周期的处理
                             break;
                         }
                     }
